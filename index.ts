@@ -1,5 +1,6 @@
-export * from './src/constants/config';
-export * from './src/networks';
-export * from './src/networks/customViemChains';
-export * from './src/networks/networkTypes';
-export * from './src/types/ConceroNetwork';
+import {config} from './src/constants/config';
+import {conceroNetworks} from './src/networks';
+import {networkTypes} from './src/networks/networkTypes';
+import {type ConceroNetwork} from './src/types/ConceroNetwork';
+
+export {config, conceroNetworks, networkTypes, ConceroNetwork}
