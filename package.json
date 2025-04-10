@@ -1,6 +1,15 @@
 {
   "name": "@concero/contract-utils",
   "version": "1.0.0",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "bugs": {
     "email": "security@concero.io",
@@ -16,6 +25,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "build": "bun build ./src/index.ts --outfile ./dist/index.js --target node",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",
     "check-updates": "npx npm-check-updates"

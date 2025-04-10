@@ -1,6 +1,9 @@
 {
   "include": ["**/*.ts"],
   "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
     "target": "esnext",
     "module": "CommonJS",
     "esModuleInterop": true,

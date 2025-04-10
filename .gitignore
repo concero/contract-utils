@@ -1,7 +1,6 @@
 # Ignore directories
 node_modules
 build
-dist
 public
 vendor
 
