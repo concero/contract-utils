@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/index.ts"],
+  "sourcesContent": ["import {config} from './constants/config';\nimport {conceroNetworks} from './networks';\nimport {networkTypes} from './networks/networkTypes';\nimport {type ConceroNetwork} from './types/ConceroNetwork';\n\nexport {config, conceroNetworks, networkTypes, ConceroNetwork}\n"],
+  "mappings": "aAAA,OAAQ,UAAAA,MAAa,qBACrB,OAAQ,mBAAAC,MAAsB,aAC9B,OAAQ,gBAAAC,MAAmB,0BAG3B,OAAQF,KAAA,OAAQC,KAAA,gBAAiBC,KAAA",
+  "names": ["config", "conceroNetworks", "networkTypes"]
+}

@@ -25,7 +25,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "bun build ./src/index.ts --outfile ./dist/index.js --target node",
+    "build": "esbuild ./src/index.ts --outfile=./dist/index.js --minify --sourcemap --platform=node --target=es2017",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",
     "check-updates": "npx npm-check-updates"
@@ -34,6 +34,7 @@
     "@types/prettier": "3.0.0",
     "@typescript-eslint/eslint-plugin": "8.29.1",
     "@typescript-eslint/parser": "8.29.1",
+    "esbuild": "^0.25.2",
     "eslint": "9.24.0",
     "eslint-config-prettier": "10.1.2",
     "eslint-plugin-prettier": "5.2.6",
