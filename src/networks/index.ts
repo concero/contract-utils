@@ -19,4 +19,4 @@ const conceroNetworks: Record<
 };
 
 export type { ConceroNetwork, ConceroMainnetNetworkNames, ConceroTestnetNetworkNames, NetworkType, NetworkEnvKeys};
-export { conceroNetworks, networkEnvKeys, networkTypes};
+export { conceroNetworks, testnetNetworks, mainnetNetworks, networkEnvKeys, networkTypes};
