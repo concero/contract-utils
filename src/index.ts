@@ -1,6 +1,17 @@
-import {config} from './constants/config';
-import {conceroNetworks} from './networks';
-import {networkTypes} from './networks/networkTypes';
-import {type ConceroNetwork} from './types/ConceroNetwork';
+import { config } from './constants/config';
+import {
+  ConceroNetwork,
+  conceroNetworks,
+  type ConceroMainnetNetworkNames,
+  type ConceroTestnetNetworkNames,
+  type NetworkEnvKeys,
+} from './networks';
+import { networkEnvKeys, networkTypes, type NetworkType } from './networks';
 
-export {config, conceroNetworks, networkTypes, ConceroNetwork}
+export { ConceroNetwork, conceroNetworks, config, networkTypes, networkEnvKeys };
+export type {
+  ConceroMainnetNetworkNames,
+  ConceroTestnetNetworkNames,
+  NetworkType,
+  NetworkEnvKeys,
+};

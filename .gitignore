@@ -15,9 +15,6 @@ venv
 # Ignore log files
 *.log
 
-# Ignore TypeScript definition and map files
-**/*.d.ts
-**/*.d.ts.map
 
 # Ignore temporary files
 *.tmp
