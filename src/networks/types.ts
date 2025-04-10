@@ -1,3 +1,4 @@
+import { NetworkType } from './networkTypes';
 import { Chain } from 'viem';
 
 export type ConceroNetwork = {
@@ -8,5 +9,3 @@ export type ConceroNetwork = {
   confirmations: number;
   viemChain: Chain;
 };
-
-export type NetworkType = 'mainnet' | 'testnet' | 'localhost';
