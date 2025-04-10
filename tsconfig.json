@@ -1,15 +1,17 @@
 {
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "outDir": "./dist",
     "declaration": true,
-    "declarationMap": true,
-    "target": "esnext",
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "forceConsistentCasingInFileNames": true
   }
 }

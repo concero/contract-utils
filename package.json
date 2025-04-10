@@ -2,6 +2,7 @@
   "name": "@concero/contract-utils",
   "version": "1.0.0",
   "main": "./dist/index.js",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/index.js"
@@ -25,7 +26,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "esbuild ./src/index.ts --outfile=./dist/index.js --minify --sourcemap --platform=node --target=es2017",
+    "build": "npm run build:types && esbuild ./src/index.ts --outdir=./dist --minify --bundle --sourcemap --platform=node --format=cjs",
+    "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",
     "check-updates": "npx npm-check-updates"
