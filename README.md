@@ -1,9 +1,19 @@
-# Concero - TypeScript Template
+# @concero/contract-utils
 
-This is a starter template for Concero repositories.
+A utility package for blockchain network configurations used in Concero repositories.
 
-It includes:
-- EsLint Config
-- Prettier Config
-- TS Config
-- Husky Config
+## Usage
+
+```typescript
+import { conceroNetworks } from '@concero/contract-utils';
+```
+
+### Network Types
+
+```typescript
+import {
+  ConceroNetwork,
+  ConceroMainnetNetworkNames,
+  ConceroTestnetNetworkNames
+} from '@concero/contract-utils';
+```
