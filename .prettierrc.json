@@ -1,0 +1,22 @@
+{
+  "overrides": [
+    {
+      "files": ["*.ts", "**/*.ts"],
+      "options": {
+        "arrowParens": "always",
+        "printWidth": 80,
+        "tabWidth": 2,
+        "trailingComma": "es5",
+        "semi": true,
+        "singleQuote": true,
+        "bracketSpacing": true,
+        "endOfLine": "lf",
+        "plugins": [
+          "prettier-plugin-organize-imports",
+          "prettier-plugin-jsdoc"
+        ],
+        "parser": "typescript"
+      }
+    }
+  ]
+}

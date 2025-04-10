@@ -1,0 +1,34 @@
+{
+  "name": "@concero/ts-template",
+  "version": "1.0.0",
+  "license": "MIT",
+  "bugs": "security@concero.io",
+  "homepage": "https://concero.io",
+  "author": "Concero",
+  "description": "",
+  "keywords": [
+    "concero"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "lint": "eslint --config .eslint.config.mjs",
+    "format": "prettier --config .prettierrc.json --write **/*.{ts,json}",
+    "check-updates": "npx npm-check-updates"
+  },
+  "devDependencies": {
+    "@types/prettier": "3.0.0",
+    "@typescript-eslint/eslint-plugin": "8.22.0",
+    "@typescript-eslint/parser": "8.22.0",
+    "eslint": "9.19.0",
+    "eslint-config-prettier": "10.0.1",
+    "eslint-plugin-prettier": "5.2.3",
+    "husky": "9.1.7",
+    "prettier": "3.4.2",
+    "prettier-plugin-jsdoc": "1.3.2",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Branch name validation
+./$(dirname "$0")/validateBranchName.sh
+
+# Pre-commit checks
+npm run format
+#yarn lint
+
+echo "✅ Pre-commit checks passed successfully."
+exit 0

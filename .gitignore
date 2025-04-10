@@ -1,0 +1,32 @@
+# Ignore directories
+node_modules
+build
+dist
+public
+vendor
+
+# Ignore cache and virtual environment directories
+cache
+venv
+
+# Ignore IDE and editor configuration directories
+.idea/
+.vscode/
+
+# Ignore log files
+*.log
+
+# Ignore TypeScript definition and map files
+**/*.d.ts
+**/*.d.ts.map
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore environment variable files
+.env
+.env.*
+
+# Ignore miscellaneous files
+*.DS_Store
