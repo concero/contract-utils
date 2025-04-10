@@ -1,7 +1,7 @@
 export declare const testnetNetworks: {
     arbitrumSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -42,7 +42,7 @@ export declare const testnetNetworks: {
     };
     baseSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -356,7 +356,7 @@ export declare const testnetNetworks: {
     };
     astarShibuya: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -406,7 +406,7 @@ export declare const testnetNetworks: {
     };
     roninSaigon: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -446,7 +446,7 @@ export declare const testnetNetworks: {
     };
     megaethTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -486,7 +486,7 @@ export declare const testnetNetworks: {
     };
     sonicBlaze: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -526,7 +526,7 @@ export declare const testnetNetworks: {
     };
     monadTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -566,7 +566,7 @@ export declare const testnetNetworks: {
     };
     sepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -614,7 +614,7 @@ export declare const testnetNetworks: {
     };
     lineaSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -667,7 +667,7 @@ export declare const testnetNetworks: {
     };
     bnbTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -708,7 +708,7 @@ export declare const testnetNetworks: {
     };
     soneiumMinato: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1021,7 +1021,7 @@ export declare const testnetNetworks: {
     };
     apechainCurtis: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1071,7 +1071,7 @@ export declare const testnetNetworks: {
     };
     avalancheFuji: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1112,7 +1112,7 @@ export declare const testnetNetworks: {
     };
     optimismSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1423,7 +1423,7 @@ export declare const testnetNetworks: {
     };
     polygonAmoy: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1464,7 +1464,7 @@ export declare const testnetNetworks: {
     };
     bitlayerTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1505,7 +1505,7 @@ export declare const testnetNetworks: {
     };
     blastSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1546,7 +1546,7 @@ export declare const testnetNetworks: {
     };
     botanixTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -1589,7 +1589,7 @@ export declare const testnetNetworks: {
     };
     celoAlfajores: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2494,7 +2494,7 @@ export declare const testnetNetworks: {
     };
     coreTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2544,7 +2544,7 @@ export declare const testnetNetworks: {
     };
     cronosTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2584,7 +2584,7 @@ export declare const testnetNetworks: {
     };
     gnosisChiado: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2626,7 +2626,7 @@ export declare const testnetNetworks: {
     };
     hashkeyTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2669,7 +2669,7 @@ export declare const testnetNetworks: {
     };
     inkSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -2975,7 +2975,7 @@ export declare const testnetNetworks: {
     };
     mantleSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3016,7 +3016,7 @@ export declare const testnetNetworks: {
     };
     scrollSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3057,7 +3057,7 @@ export declare const testnetNetworks: {
     };
     seiTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3101,7 +3101,7 @@ export declare const testnetNetworks: {
     };
     shibariumPuppynet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3142,7 +3142,7 @@ export declare const testnetNetworks: {
     };
     unichainSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3448,7 +3448,7 @@ export declare const testnetNetworks: {
     };
     xlayerSepolia: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3488,7 +3488,7 @@ export declare const testnetNetworks: {
     };
     zircuitTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -3775,7 +3775,7 @@ export declare const testnetNetworks: {
     };
     modeTestnet: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;

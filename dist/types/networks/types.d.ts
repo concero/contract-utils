@@ -1,5 +1,5 @@
-import { NetworkType } from "./networkTypes";
-import { Chain } from "viem";
+import { Chain } from 'viem';
+export type NetworkType = 'mainnet' | 'testnet' | 'localhost';
 export type ConceroNetwork = {
     name: string;
     type: NetworkType;

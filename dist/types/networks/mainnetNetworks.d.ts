@@ -1,7 +1,7 @@
 export declare const mainnetNetworks: {
     ethereum: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -49,7 +49,7 @@ export declare const mainnetNetworks: {
     };
     base: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -362,7 +362,7 @@ export declare const mainnetNetworks: {
     };
     arbitrum: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -403,7 +403,7 @@ export declare const mainnetNetworks: {
     };
     polygon: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -444,7 +444,7 @@ export declare const mainnetNetworks: {
     };
     avalanche: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -485,7 +485,7 @@ export declare const mainnetNetworks: {
     };
     optimism: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
@@ -796,7 +796,7 @@ export declare const mainnetNetworks: {
     };
     polygonZkEvm: {
         name: string;
-        type: import("./networkTypes").NetworkType;
+        type: import("./types").NetworkType;
         chainId: number;
         chainSelector: number;
         confirmations: number;
