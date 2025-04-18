@@ -1,22 +1,6 @@
-import {
-  type ConceroMainnetNetworkNames,
-  mainnetNetworks,
-} from './mainnetNetworks';
-import {
-  type ConceroTestnetNetworkNames,
-  testnetNetworks,
-} from './testnetNetworks';
-import { type ConceroNetwork, type NetworkType } from "./types";
-import {networkEnvKeys, type NetworkEnvKeys} from "./networkEnvKeys";
-import {networkTypes} from "./networkTypes";
+import { getNetworkEnvKey } from './getNetworkEnvKey';
+import { networkTypes } from './networkTypes';
+import { type ConceroNetwork, type NetworkType } from './types';
 
-const conceroNetworks: Record<
-  ConceroMainnetNetworkNames | ConceroTestnetNetworkNames,
-  ConceroNetwork
-> = {
-  ...testnetNetworks,
-  ...mainnetNetworks,
-};
-
-export type { ConceroNetwork, ConceroMainnetNetworkNames, ConceroTestnetNetworkNames, NetworkType, NetworkEnvKeys};
-export { conceroNetworks, testnetNetworks, mainnetNetworks, networkEnvKeys, networkTypes};
+export { getNetworkEnvKey, networkTypes };
+export type { ConceroNetwork, NetworkType };
