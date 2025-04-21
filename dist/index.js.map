@@ -1,7 +1,7 @@
 {
   "version": 3,
-  "sources": ["../src/index.ts"],
-  "sourcesContent": ["import { config } from './constants/config';\nimport {\n  networkTypes,\n  type ConceroNetwork,\n  type NetworkType,\n} from './networks';\n\nexport { ConceroNetwork, config, networkTypes };\nexport type { NetworkType };\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,oBAAuB;AACvB,sBAIO;",
+  "sources": ["../src/index.ts", "../src/constants/config.ts", "../src/networks/networkTypes.ts"],
+  "sourcesContent": ["import { config } from './constants/config';\nimport {\n  networkTypes,\n  type ConceroNetwork,\n  type NetworkType,\n} from './networks';\n\nexport { ConceroNetwork, config, networkTypes };\nexport type { NetworkType };\n", "export const config = {\n  DEFAULT_BLOCK_CONFIRMATIONS: 2,\n};\n", "import { type NetworkType } from './types';\n\nexport const networkTypes: Record<NetworkType, NetworkType> = {\n  mainnet: 'mainnet',\n  testnet: 'testnet',\n  localhost: 'localhost',\n};\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;ACAO,IAAM,SAAS;AAAA,EACpB,6BAA6B;AAC/B;;;ACAO,IAAM,eAAiD;AAAA,EAC5D,SAAS;AAAA,EACT,SAAS;AAAA,EACT,WAAW;AACb;",
   "names": []
 }

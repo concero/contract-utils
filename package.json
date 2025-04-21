@@ -26,7 +26,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "npm run build:types && esbuild ./src/index.ts --outdir=./dist --sourcemap --platform=node --format=cjs",
+    "build": "npm run build:types && esbuild ./src/index.ts --outdir=./dist --sourcemap --bundle --platform=node --format=cjs",
     "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",

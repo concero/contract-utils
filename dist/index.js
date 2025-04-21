@@ -16,14 +16,26 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
 var index_exports = {};
 __export(index_exports, {
-  config: () => import_config.config,
-  networkTypes: () => import_networks.networkTypes
+  config: () => config,
+  networkTypes: () => networkTypes
 });
 module.exports = __toCommonJS(index_exports);
-var import_config = require("./constants/config");
-var import_networks = require("./networks");
+
+// src/constants/config.ts
+var config = {
+  DEFAULT_BLOCK_CONFIRMATIONS: 2
+};
+
+// src/networks/networkTypes.ts
+var networkTypes = {
+  mainnet: "mainnet",
+  testnet: "testnet",
+  localhost: "localhost"
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   config,
