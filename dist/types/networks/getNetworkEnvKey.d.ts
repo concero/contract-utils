@@ -5,3 +5,4 @@
  * @returns The network name in SNAKE_CASE
  */
 export declare function getNetworkEnvKey(networkName: string): string;
+export declare function getNetworkName(networkEnvKey: string): string;
