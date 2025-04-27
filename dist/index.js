@@ -21,6 +21,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   config: () => config,
+  getNetworkEnvKey: () => getNetworkEnvKey,
   networkTypes: () => networkTypes
 });
 module.exports = __toCommonJS(index_exports);
@@ -29,6 +30,14 @@ module.exports = __toCommonJS(index_exports);
 var config = {
   DEFAULT_BLOCK_CONFIRMATIONS: 2
 };
+
+// src/networks/getNetworkEnvKey.ts
+function getNetworkEnvKey(networkName) {
+  if (!networkName) {
+    throw new Error("Network name must be provided");
+  }
+  return networkName.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+}
 
 // src/networks/networkTypes.ts
 var networkTypes = {
@@ -39,6 +48,7 @@ var networkTypes = {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   config,
+  getNetworkEnvKey,
   networkTypes
 });
 //# sourceMappingURL=index.js.map

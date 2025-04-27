@@ -1,4 +1,4 @@
 import { config } from './constants/config';
-import { networkTypes, type ConceroNetwork, type NetworkType } from './networks';
-export { ConceroNetwork, config, networkTypes };
+import { getNetworkEnvKey, networkTypes, type ConceroNetwork, type NetworkType } from './networks';
+export { ConceroNetwork, config, getNetworkEnvKey, networkTypes };
 export type { NetworkType };
