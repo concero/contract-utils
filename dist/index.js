@@ -22,6 +22,7 @@ var index_exports = {};
 __export(index_exports, {
   config: () => config,
   getNetworkEnvKey: () => getNetworkEnvKey,
+  getNetworkKey: () => getNetworkKey,
   networkTypes: () => networkTypes
 });
 module.exports = __toCommonJS(index_exports);
@@ -36,7 +37,25 @@ function getNetworkEnvKey(networkName) {
   if (!networkName) {
     throw new Error("Network name must be provided");
   }
-  return networkName.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+  return camelCaseToCapsSnakeCase(networkName);
+}
+function getNetworkKey(NETWORK_NAME) {
+  if (!NETWORK_NAME) {
+    throw new Error("Network name must be provided");
+  }
+  return capsSnakeCaseToCamelCase(NETWORK_NAME);
+}
+function capsSnakeCaseToCamelCase(snakeCaseString) {
+  if (!snakeCaseString) {
+    throw new Error("String must be provided");
+  }
+  return snakeCaseString.toLowerCase().replace(/_([a-z])/g, (_, char) => char.toUpperCase());
+}
+function camelCaseToCapsSnakeCase(camelCaseString) {
+  if (!camelCaseString) {
+    throw new Error("String must be provided");
+  }
+  return camelCaseString.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
 }
 
 // src/networks/networkTypes.ts
@@ -49,6 +68,7 @@ var networkTypes = {
 0 && (module.exports = {
   config,
   getNetworkEnvKey,
+  getNetworkKey,
   networkTypes
 });
 //# sourceMappingURL=index.js.map
