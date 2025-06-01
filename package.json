@@ -1,13 +1,14 @@
 {
   "name": "@concero/contract-utils",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.esm.js"
     }
   },
   "files": [
@@ -28,7 +29,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "npm run build:types && esbuild ./src/index.ts --outdir=./dist --sourcemap --bundle --platform=node --format=cjs",
+    "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --outfile=dist/index.cjs.js",
+    "build:esm": "esbuild ./src/index.ts --bundle --platform=node --format=esm --sourcemap --outfile=dist/index.esm.js",
+    "build": "npm run build:types && npm run build:cjs && npm run build:esm",
     "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",

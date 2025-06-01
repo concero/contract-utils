@@ -71,4 +71,4 @@ var networkTypes = {
   getNetworkKey,
   networkTypes
 });
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.cjs.js.map
