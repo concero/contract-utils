@@ -21,6 +21,8 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   config: () => config,
+  getNetworkEnvKey: () => getNetworkEnvKey,
+  getNetworkKey: () => getNetworkKey,
   networkTypes: () => networkTypes
 });
 module.exports = __toCommonJS(index_exports);
@@ -29,6 +31,32 @@ module.exports = __toCommonJS(index_exports);
 var config = {
   DEFAULT_BLOCK_CONFIRMATIONS: 2
 };
+
+// src/networks/getNetworkEnvKey.ts
+function getNetworkEnvKey(networkName) {
+  if (!networkName) {
+    throw new Error("Network name must be provided");
+  }
+  return camelCaseToCapsSnakeCase(networkName);
+}
+function getNetworkKey(NETWORK_NAME) {
+  if (!NETWORK_NAME) {
+    throw new Error("Network name must be provided");
+  }
+  return capsSnakeCaseToCamelCase(NETWORK_NAME);
+}
+function capsSnakeCaseToCamelCase(snakeCaseString) {
+  if (!snakeCaseString) {
+    throw new Error("String must be provided");
+  }
+  return snakeCaseString.toLowerCase().replace(/_([a-z])/g, (_, char) => char.toUpperCase());
+}
+function camelCaseToCapsSnakeCase(camelCaseString) {
+  if (!camelCaseString) {
+    throw new Error("String must be provided");
+  }
+  return camelCaseString.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+}
 
 // src/networks/networkTypes.ts
 var networkTypes = {
@@ -39,6 +67,8 @@ var networkTypes = {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   config,
+  getNetworkEnvKey,
+  getNetworkKey,
   networkTypes
 });
 //# sourceMappingURL=index.js.map
