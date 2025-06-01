@@ -26,3 +26,4 @@ export declare function capsSnakeCaseToCamelCase(snakeCaseString: string): strin
  * @returns The string converted to CAPS_SNAKE_CASE format
  */
 export declare function camelCaseToCapsSnakeCase(camelCaseString: string): string;
+export declare function getNetworkName(networkEnvKey: string): string;
