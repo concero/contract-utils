@@ -55,7 +55,7 @@ function camelCaseToCapsSnakeCase(camelCaseString) {
   if (!camelCaseString) {
     throw new Error("String must be provided");
   }
-  return camelCaseString.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+  return camelCaseString.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toUpperCase();
 }
 
 // src/networks/networkTypes.ts

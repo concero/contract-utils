@@ -51,10 +51,10 @@ export function camelCaseToCapsSnakeCase(camelCaseString: string): string {
     throw new Error('String must be provided');
   }
 
-  return camelCaseString.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase();
+  return camelCaseString.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toUpperCase();
 }
 
-export function getNetworkName(networkEnvKey: string ) : string {
+export function getNetworkName(networkEnvKey: string): string {
   if (!networkEnvKey) {
     throw new Error('Network name must be provided');
   }
@@ -62,6 +62,8 @@ export function getNetworkName(networkEnvKey: string ) : string {
   return networkEnvKey
     .toLowerCase()
     .split('_')
-    .map((word, index) => index === 0 ? word : word[0].toUpperCase() + word.slice(1))
+    .map((word, index) =>
+      index === 0 ? word : word[0].toUpperCase() + word.slice(1)
+    )
     .join('');
 }
