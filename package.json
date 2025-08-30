@@ -34,13 +34,14 @@
     "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",
-    "check-updates": "npx npm-check-updates"
+    "check-updates": "npx npm-check-updates",
+    "preinstall": "sh validatePackageManager.sh yarn"
   },
   "devDependencies": {
     "@types/prettier": "3.0.0",
     "@typescript-eslint/eslint-plugin": "8.29.1",
     "@typescript-eslint/parser": "8.29.1",
-    "esbuild": "^0.25.2",
+    "esbuild": "0.25.2",
     "eslint": "9.24.0",
     "eslint-config-prettier": "10.1.2",
     "eslint-plugin-prettier": "5.2.6",
