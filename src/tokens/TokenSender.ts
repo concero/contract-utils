@@ -67,8 +67,10 @@ export class TokenSender {
 		});
 
 		if (status !== 'success') {
-			throw new Error('Error sending token');
+			throw new Error(`Error sending token. Hash: ${txHash}`);
 		}
+
+		console.log(`Token successfully sent. Hash: ${txHash}`);
 
 		return txHash;
 	}
