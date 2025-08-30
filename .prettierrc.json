@@ -5,7 +5,8 @@
       "options": {
         "arrowParens": "always",
         "printWidth": 80,
-        "tabWidth": 2,
+        "tabWidth": 4,
+        "useTabs": true,
         "trailingComma": "es5",
         "semi": true,
         "singleQuote": true,
