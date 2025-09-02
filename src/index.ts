@@ -9,6 +9,8 @@ import {
 
 import { TokenSender } from './tokens/TokenSender';
 
+import { hardhatDeployWrapper } from './deploy/hardhatDeployWrapper';
+
 export {
 	ConceroNetwork,
 	config,
@@ -16,5 +18,6 @@ export {
 	getNetworkKey,
 	networkTypes,
 	TokenSender,
+	hardhatDeployWrapper,
 };
 export type { NetworkType };
