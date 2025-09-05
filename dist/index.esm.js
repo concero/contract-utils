@@ -7,7 +7,7 @@ var __esm = (fn, res) => function __init() {
 var version;
 var init_version = __esm({
   "node_modules/viem/_esm/errors/version.js"() {
-    version = "2.26.2";
+    version = "2.24.2";
   }
 });
 
@@ -564,11 +564,105 @@ var TokenSender = class {
     return txHash;
   }
 };
+
+// src/deploy/getActualGasData.ts
+async function getActualGasData(publicClient) {
+  const block = await publicClient.getBlock();
+  const isEIP1559 = !!block.baseFeePerGas;
+  let gasPrice = 0n;
+  let maxPriorityFeePerGas = 0n;
+  try {
+    if (isEIP1559) {
+      const { maxFeePerGas } = await publicClient.estimateFeesPerGas();
+      gasPrice = maxFeePerGas;
+      maxPriorityFeePerGas = await publicClient.estimateMaxPriorityFeePerGas();
+    } else {
+      gasPrice = await publicClient.getGasPrice();
+    }
+  } catch (error) {
+    console.error("Error getting actual gas data:", error);
+    return {
+      gasPrice: "0",
+      maxFeePerGas: "0",
+      maxPriorityFeePerGas: "0"
+    };
+  }
+  const gasDataLegacy = {
+    gasPrice: gasPrice.toString()
+  };
+  const gasDataEIP1559 = {
+    maxFeePerGas: gasPrice.toString(),
+    maxPriorityFeePerGas: maxPriorityFeePerGas.toString()
+  };
+  const gasData = isEIP1559 ? gasDataEIP1559 : gasDataLegacy;
+  return gasData;
+}
+
+// src/deploy/hardhatDeployWrapper.ts
+async function hardhatDeployWrapper(contractName, {
+  hre,
+  args,
+  publicClient,
+  proxy = false,
+  gasLimit,
+  log = false,
+  libraries,
+  skipIfAlreadyDeployed = false
+}) {
+  let actualDeployer;
+  if (proxy) {
+    const { proxyDeployer } = await hre.getNamedAccounts();
+    actualDeployer = proxyDeployer;
+  } else {
+    const { deployer } = await hre.getNamedAccounts();
+    actualDeployer = deployer;
+  }
+  const { deploy } = hre.deployments;
+  const nonce = await publicClient.getTransactionCount({
+    address: actualDeployer
+  });
+  const gasData = await getActualGasData(publicClient);
+  const waitConfirmations = hre.network.name.startsWith("ethereum") ? 1 : 3;
+  if (log) {
+    console.log(
+      `\x1B[34m[hardhatDeployWrapper]\x1B[0m\x1B[35m[args]\x1B[0m`,
+      {
+        from: actualDeployer,
+        args,
+        nonce,
+        gasLimit: gasLimit ? gasLimit : "auto",
+        gasData,
+        waitConfirmations
+      }
+    );
+  }
+  let deployment;
+  try {
+    console.log("Starting deployment of:", contractName);
+    deployment = await deploy(contractName, {
+      from: actualDeployer,
+      args,
+      log: true,
+      autoMine: true,
+      nonce,
+      waitConfirmations,
+      ...gasLimit ? { gasLimit } : {},
+      ...gasData,
+      ...libraries ? { libraries } : {},
+      skipIfAlreadyDeployed
+    });
+  } catch (error) {
+    console.error("Error deploying contract:", error);
+    throw error;
+  }
+  return deployment;
+}
 export {
   TokenSender,
   config,
   getNetworkEnvKey,
   getNetworkKey,
+  hardhatDeployWrapper,
   networkTypes
 };
 //# sourceMappingURL=index.esm.js.map
