@@ -1,6 +1,13 @@
 #!/usr/bin/env sh
 set -eu
 
+case "${PWD}" in
+  *"/node_modules/"*|*"/node_modules") exit 0 ;;
+esac
+if [ "${INIT_CWD:-$PWD}" != "$PWD" ]; then
+  exit 0
+fi
+
 if [ "$#" -lt 1 ]; then
   echo "Usage: $0 <allowed_pm1> [allowed_pm2 ...]" >&2
   exit 2
@@ -21,8 +28,4 @@ fi
 
 echo "🚫 Use: $* to install dependencies." >&2
 echo "Detected user agent: '${UA:-unknown}'" >&2
-
-rm -rf node_modules 2>/dev/null || true
-rm -f bun.lock bun.lockb yarn.lock package-lock.json npm-shrinkwrap.json 2>/dev/null || true
-
 exit 1
