@@ -35,8 +35,7 @@
     "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",
     "format": "prettier --config .prettierrc.json --write **/*.{ts,json} **/**/*.{ts,json}",
-    "check-updates": "npx npm-check-updates",
-    "preinstall": "sh validatePackageManager.sh yarn"
+    "check-updates": "npx npm-check-updates"
   },
   "peerDependencies": {
     "hardhat": "^2.17.0",
