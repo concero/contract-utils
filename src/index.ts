@@ -6,6 +6,7 @@ import {
 	type ConceroNetwork,
 	type NetworkType,
 } from './networks';
+import { genericDeploy } from './deploy/GenericDeploy';
 
 import { TokenSender } from './tokens/TokenSender';
 
@@ -19,5 +20,6 @@ export {
 	networkTypes,
 	TokenSender,
 	hardhatDeployWrapper,
+	genericDeploy,
 };
 export type { NetworkType };

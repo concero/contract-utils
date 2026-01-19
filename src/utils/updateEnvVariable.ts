@@ -1,0 +1,50 @@
+import { readFileSync, writeFileSync } from "fs";
+import path from "path";
+
+import { getNetworkEnvKey } from "../networks/getNetworkEnvKey";
+
+import { envPrefixes } from "../constants/deploymentVariables";
+import { ConceroNetworkNames } from "../../types/ConceroNetwork";
+import { EnvFileName, EnvPrefixes } from "../../types/deploymentVariables";
+import log from "./log";
+
+export type ContractPrefix = keyof EnvPrefixes;
+
+export function updateEnvVariable(key: string, newValue: string, envFileName: EnvFileName) {
+	const filePath = path.join(__dirname, `../.env.${envFileName}`);
+	if (!filePath) throw new Error(`File not found: ${filePath}`);
+
+	const envContents = readFileSync(filePath, "utf8");
+	let lines = envContents.split(/\r?\n/);
+
+	if (!lines.some(line => line.startsWith(`${key}=`))) {
+		log(`Key ${key} not found in .env file. Adding to ${filePath}`, "updateEnvVariable");
+		lines.push(`${key}=${newValue}`);
+	}
+
+	const newLines = lines.map(line => {
+		let [currentKey, currentValue] = line.split("=");
+		if (currentKey === key) {
+			return `${key}=${newValue}`;
+		}
+		return line;
+	});
+
+	writeFileSync(filePath, newLines.join("\n"));
+	process.env[key] = newValue;
+}
+
+export function updateEnvAddress(
+	prefix: ContractPrefix,
+	newValue: string,
+	envFileName: EnvFileName,
+	networkPostfix?: ConceroNetworkNames | string,
+): void {
+	const searchKey = networkPostfix
+		? `${envPrefixes[prefix]}_${getNetworkEnvKey(networkPostfix)}`
+		: envPrefixes[prefix];
+
+	updateEnvVariable(searchKey, newValue, envFileName);
+}
+
+export default updateEnvVariable;
