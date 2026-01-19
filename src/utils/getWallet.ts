@@ -1,4 +1,4 @@
-import { NetworkType } from '../networks/types';
+import { type NetworkType } from '../types';
 import { warn } from './log';
 
 export function getWallet(
@@ -6,8 +6,7 @@ export function getWallet(
 	accountType:
 		| 'proxyDeployer'
 		| 'deployer'
-		| 'operator'
-		| 'priceFeedProxyDeployer',
+		| 'operator',
 	walletType: 'privateKey' | 'address'
 ) {
 	let prefix;
@@ -21,9 +20,6 @@ export function getWallet(
 			break;
 		case 'operator':
 			prefix = 'OPERATOR';
-			break;
-		case 'priceFeedProxyDeployer':
-			prefix = 'PRICE_FEED_PROXY_DEPLOYER';
 			break;
 		default:
 			throw new Error(`Unknown account type: ${accountType}`);

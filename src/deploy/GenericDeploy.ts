@@ -1,24 +1,31 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 
 import { conceroNetworks } from '../constants/conceroNetworks';
-import { ContractPrefix, EnvFileName } from '../../types/deploymentVariables';
-import { getTrezorDeployEnabled, log, updateEnvAddress } from '../utils';
+import { getTrezorDeployEnabled, log } from '../utils';
+import { extractProxyAdminAddress } from '../utils/extractProxyAdminAddress';
 
 export interface ITxParams {
 	gasLimit: bigint;
 }
 
+export interface IDeployResult {
+	hash: string;
+	address: string;
+	chainType: string;
+	chainName: string;
+	proxyAdminAddress: string;
+}
+
 export interface IGenericDeployParams {
 	hre: HardhatRuntimeEnvironment;
 	contractName: string;
-	contractPrefix: ContractPrefix;
 	txParams?: Partial<ITxParams>;
 }
 
 export const genericDeploy = async (
-	{ hre, contractName, contractPrefix, txParams }: IGenericDeployParams,
+	{ hre, contractName, txParams }: IGenericDeployParams,
 	...contractConstructorArgs: any[]
-) => {
+): Promise<IDeployResult> => {
 	const [deployer] = await hre.ethers.getSigners();
 	const chain = conceroNetworks[hre.network.name];
 
@@ -47,7 +54,7 @@ export const genericDeploy = async (
 	}
 
 	const contract = await contractFactory.deploy(...contractConstructorArgs, deployOverrides);
-	await contract.deploymentTransaction()?.wait();
+	const receipt = await contract.deploymentTransaction()?.wait();
 	const deploymentAddress = await contract.getAddress();
 
 	if (hre.tenderly) {
@@ -60,12 +67,11 @@ export const genericDeploy = async (
 		chain.name
 	);
 
-	updateEnvAddress(
-		contractPrefix,
-		deploymentAddress,
-		`deployments.${chain.type}` as EnvFileName,
-		chain.name,
-	);
-
-	return contract.deploymentTransaction()?.hash;
+	return {
+		hash: contract.deploymentTransaction()?.hash,
+		address: deploymentAddress,
+		chainName: chain.name,
+		chainType: chain.type,
+		proxyAdminAddress: extractProxyAdminAddress(receipt)
+	};
 };

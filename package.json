@@ -9,6 +9,9 @@
       "types": "./dist/types/src/index.d.ts",
       "require": "./dist/index.cjs.js",
       "import": "./dist/index.esm.js"
+    },
+    "./types": {
+      "types": "./dist/types/src/types/index.d.ts"
     }
   },
   "files": [
@@ -29,8 +32,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --outfile=dist/index.cjs.js",
-    "build:esm": "esbuild ./src/index.ts --bundle --platform=node --format=esm --sourcemap --outfile=dist/index.esm.js",
+    "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --outfile=dist/index.cjs.js",
+    "build:esm": "esbuild ./src/index.ts --bundle --platform=node --format=esm --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --outfile=dist/index.esm.js",
     "build": "npm run build:types && npm run build:cjs && npm run build:esm",
     "build:types": "tsc --project tsconfig.json",
     "lint": "eslint --config .eslint.config.mjs",

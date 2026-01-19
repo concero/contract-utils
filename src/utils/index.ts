@@ -1,17 +1,19 @@
-import { createViemChain } from './createViemChain';
-import { getEnvVar } from './getEnvVar';
-import { getTrezorDeployEnabled } from './getTrezorDeployEnabled';
-import { getWallet } from './getWallet';
-import { err, log, warn } from './log';
-import { updateEnvAddress } from './updateEnvVariable';
-
+export { createViemChain } from './createViemChain';
+export { getEnvVar, createEnvAddressGetter } from './getEnvVar';
+export { getTrezorDeployEnabled } from './getTrezorDeployEnabled';
+export { getWallet } from './getWallet';
+export { err, log, warn } from './log';
+export { shorten, formatGas } from './formatting';
+export { ethersSignerCallContract } from './ethersSignerCallContract';
+export { compileContracts } from './compileContracts';
+export { localhostViemChain } from './localhostViemChain';
+export { extractProxyAdminAddress } from './extractProxyAdminAddress';
+export { createEnvUpdater, type EnvUpdaterConfig } from './createEnvUpdater';
+export { getActualGasData } from './getActualGasData';
 export {
-	createViemChain,
-	err,
-	getEnvVar,
-	getTrezorDeployEnabled,
-	getWallet,
-	log,
-	warn,
-	updateEnvAddress,
-};
+	getClients,
+	getFallbackClients,
+	getTestClient,
+	getViemAccount,
+	type ExtendedTestClient,
+} from './getViemClients';

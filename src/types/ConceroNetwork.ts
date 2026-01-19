@@ -38,6 +38,7 @@ export type ConceroLocalNetwork = ConceroNetwork & {
 		blockNumber?: number;
 	};
 };
+
 export type ConceroHardhatNetwork = Omit<ConceroLocalNetwork, 'accounts'> & {
 	accounts: Array<{
 		privateKey: string;

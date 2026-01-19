@@ -1,6 +1,6 @@
 import { defineChain } from 'viem';
 
-import { ChainDefinition } from '../../types/ConceroNetwork';
+import { type ChainDefinition } from '../types';
 
 export function createViemChain(
 	chainDefinition: ChainDefinition
@@ -18,11 +18,11 @@ export function createViemChain(
 		},
 		blockExplorers: chainDefinition.blockExplorer
 			? {
-					default: {
-						name: chainDefinition.blockExplorer.name,
-						url: chainDefinition.blockExplorer.url,
-					},
-				}
+				default: {
+					name: chainDefinition.blockExplorer.name,
+					url: chainDefinition.blockExplorer.url,
+				},
+			}
 			: undefined,
 		testnet: chainDefinition.isTestnet,
 	});

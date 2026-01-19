@@ -1,12 +1,13 @@
 import mainnetChains from '@concero/concero-networks/output/chains.mainnet.json';
 import testnetChains from '@concero/concero-networks/output/chains.testnet.json';
 import type { Chain } from '@concero/concero-networks/src/types';
-import { type NetworkType } from '../../types/ConceroNetwork';
 
 import {
-	ChainDefinition,
-	ConceroNetwork,
-} from '../../types/ConceroNetwork';
+	type NetworkType,
+	type ChainDefinition,
+	type ConceroNetwork,
+	networkTypes,
+} from '../types';
 import { getWallet } from '../utils';
 import { createViemChain } from '../utils/createViemChain';
 import { getTrezorDeployEnabled } from '../utils/getTrezorDeployEnabled';
@@ -29,12 +30,6 @@ const trezorDeployEnabled = getTrezorDeployEnabled();
 
 const testnetAccounts = [testnetDeployerPK, testnetProxyDeployerPK];
 
-const networkTypes: Record<NetworkType, NetworkType> = {
-	mainnet: 'mainnet',
-	testnet: 'testnet',
-	localhost: 'localhost',
-};
-
 export type ConceroMainnetNetworkNames =
 	(typeof mainnetChains)[keyof typeof mainnetChains]['name'];
 export type ConceroTestnetNetworkNames =
@@ -46,7 +41,7 @@ function createExtendedNetworks<T extends Record<string, Chain>>(
 	accounts: (string | undefined)[]
 ): Record<T[keyof T]['name'], ConceroNetwork> {
 	const validAccounts = accounts.filter((acc): acc is string => !!acc);
-	
+
 	return Object.fromEntries(
 		Object.values(chains).map(chain => {
 			const chainDefinition: ChainDefinition = {
