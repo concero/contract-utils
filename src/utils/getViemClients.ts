@@ -15,7 +15,7 @@ import {
 import { privateKeyToAccount, type PrivateKeyAccount } from "viem/accounts";
 
 import { type ConceroNetwork, type NetworkType } from "../types";
-import { getWallet } from "../utils";
+import { getWallet, type BaseAccountTypePrefixes } from "../utils";
 import { localhostViemChain } from "./localhostViemChain";
 import { conceroNetworks } from "../constants/conceroNetworks";
 
@@ -105,13 +105,35 @@ function getFallbackClients(
 
 function getViemAccount(
 	chainType: NetworkType,
-	accountType: "proxyDeployer" | "deployer",
+	accountType: keyof BaseAccountTypePrefixes,
 ) {
 	const privateKey = `0x${getWallet(chainType, accountType, "privateKey")}`;
 
 	return privateKeyToAccount(privateKey as `0x${string}`, {
 		nonceManager: nonceManager,
 	});
+}
+
+export interface ViemAccountGetterConfig<TPrefixes extends Record<string, string>> {
+	accountTypePrefixes: TPrefixes;
+	getWallet: (chainType: NetworkType, accountType: keyof TPrefixes, walletType: 'privateKey' | 'address') => string | undefined;
+}
+
+export function createViemAccountGetter<TPrefixes extends Record<string, string>>(
+	config: ViemAccountGetterConfig<TPrefixes>,
+) {
+	function getViemAccount(
+		chainType: NetworkType,
+		accountType: keyof TPrefixes,
+	) {
+		const privateKey = `0x${config.getWallet(chainType, accountType, "privateKey")}`;
+
+		return privateKeyToAccount(privateKey as `0x${string}`, {
+			nonceManager: nonceManager,
+		});
+	}
+
+	return { getViemAccount };
 }
 
 export { getClients, getFallbackClients, getTestClient, getViemAccount };

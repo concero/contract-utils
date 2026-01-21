@@ -138,40 +138,30 @@ function createEnvAddressGetter(config2) {
 // src/utils/getTrezorDeployEnabled.ts
 var getTrezorDeployEnabled = () => getEnvVar("TREZOR_DEPLOY_ENABLED", "false") === "true";
 
-// src/utils/getWallet.ts
-function getWallet(chainType, accountType, walletType) {
-  let prefix;
-  let walletKey;
-  switch (accountType) {
-    case "proxyDeployer":
-      prefix = "PROXY_DEPLOYER";
-      break;
-    case "deployer":
-      prefix = "DEPLOYER";
-      break;
-    case "operator":
-      prefix = "OPERATOR";
-      break;
-    default:
-      throw new Error(`Unknown account type: ${accountType}`);
+// src/utils/createWalletGetter.ts
+var baseAccountTypePrefixes = {
+  proxyDeployer: "PROXY_DEPLOYER",
+  deployer: "DEPLOYER"
+};
+function createWalletGetter(config2) {
+  function getWallet2(chainType, accountType, walletType) {
+    const prefix = config2.accountTypePrefixes[accountType];
+    if (!prefix) {
+      throw new Error(`Unknown account type: ${String(accountType)}`);
+    }
+    const walletKey = walletType === "privateKey" ? "PRIVATE_KEY" : "ADDRESS";
+    const envKey = `${chainType.toUpperCase()}_${prefix}_${walletKey}`;
+    const walletValue = process.env[envKey];
+    if (!walletValue) {
+      warn(`Missing env variable: ${envKey}`, "getWallet");
+    }
+    return walletValue;
   }
-  switch (walletType) {
-    case "privateKey":
-      walletKey = "PRIVATE_KEY";
-      break;
-    case "address":
-      walletKey = "ADDRESS";
-      break;
-    default:
-      throw new Error(`Unknown wallet type: ${walletType}`);
-  }
-  const envKey = `${chainType.toUpperCase()}_${prefix}_${walletKey}`;
-  const walletValue = process.env[envKey];
-  if (!walletValue) {
-    warn(`Missing env variable: ${envKey}`, "getEnvVar");
-  }
-  return walletValue;
+  return { getWallet: getWallet2 };
 }
+var { getWallet } = createWalletGetter({
+  accountTypePrefixes: baseAccountTypePrefixes
+});
 
 // src/utils/ethersSignerCallContract.ts
 var ethersSignerCallContract = async (hre, contract, abi, functionName, ...functionArgs) => {
@@ -462,6 +452,15 @@ function getViemAccount(chainType, accountType) {
     nonceManager
   });
 }
+function createViemAccountGetter(config2) {
+  function getViemAccount2(chainType, accountType) {
+    const privateKey = `0x${config2.getWallet(chainType, accountType, "privateKey")}`;
+    return privateKeyToAccount(privateKey, {
+      nonceManager
+    });
+  }
+  return { getViemAccount: getViemAccount2 };
+}
 
 // src/utils/getGasParameters.ts
 var NETWORK_MINIMUMS = {
@@ -649,12 +648,15 @@ var TokenSender = class {
 };
 export {
   TokenSender,
+  baseAccountTypePrefixes,
   compileContracts,
   conceroNetworks,
   config,
   createEnvAddressGetter,
   createEnvUpdater,
+  createViemAccountGetter,
   createViemChain,
+  createWalletGetter,
   err,
   ethersSignerCallContract,
   extractProxyAdminAddress,

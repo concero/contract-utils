@@ -1,7 +1,7 @@
 export { createViemChain } from './createViemChain';
 export { getEnvVar, createEnvAddressGetter } from './getEnvVar';
 export { getTrezorDeployEnabled } from './getTrezorDeployEnabled';
-export { getWallet } from './getWallet';
+export { getWallet, createWalletGetter, baseAccountTypePrefixes, type BaseAccountTypePrefixes, type WalletGetterConfig } from './getWallet';
 export { err, log, warn } from './log';
 export { shorten, formatGas } from './formatting';
 export { ethersSignerCallContract } from './ethersSignerCallContract';
@@ -11,4 +11,4 @@ export { extractProxyAdminAddress } from './extractProxyAdminAddress';
 export { createEnvUpdater, type EnvUpdaterConfig } from './createEnvUpdater';
 export { getActualGasData } from './getActualGasData';
 export { getGasParameters } from './getGasParameters';
-export { getClients, getFallbackClients, getTestClient, getViemAccount, type ExtendedTestClient, } from './getViemClients';
+export { getClients, getFallbackClients, getTestClient, getViemAccount, createViemAccountGetter, type ExtendedTestClient, type ViemAccountGetterConfig, } from './getViemClients';
