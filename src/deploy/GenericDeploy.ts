@@ -6,6 +6,7 @@ import { extractProxyAdminAddress } from '../utils/extractProxyAdminAddress';
 
 export interface ITxParams {
 	gasLimit: bigint;
+	libraries: Record<string, string>;
 }
 
 export interface IDeployResult {
@@ -35,7 +36,7 @@ export const genericDeploy = async (
 		chain.name
 	);
 
-	const contractFactory = await hre.ethers.getContractFactory(contractName);
+	const contractFactory = await hre.ethers.getContractFactory(contractName, { libraries: txParams?.libraries });
 
 	const deployOverrides = txParams?.gasLimit ? { gasLimit: txParams.gasLimit } : {};
 

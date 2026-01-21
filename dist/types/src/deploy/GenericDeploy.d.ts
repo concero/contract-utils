@@ -1,6 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 export interface ITxParams {
     gasLimit: bigint;
+    libraries: Record<string, string>;
 }
 export interface IDeployResult {
     hash: string;

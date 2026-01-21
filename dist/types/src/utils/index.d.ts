@@ -10,4 +10,5 @@ export { localhostViemChain } from './localhostViemChain';
 export { extractProxyAdminAddress } from './extractProxyAdminAddress';
 export { createEnvUpdater, type EnvUpdaterConfig } from './createEnvUpdater';
 export { getActualGasData } from './getActualGasData';
+export { getGasParameters } from './getGasParameters';
 export { getClients, getFallbackClients, getTestClient, getViemAccount, type ExtendedTestClient, } from './getViemClients';

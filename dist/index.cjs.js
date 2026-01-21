@@ -46,6 +46,7 @@ __export(index_exports, {
   getClients: () => getClients,
   getEnvVar: () => getEnvVar,
   getFallbackClients: () => getFallbackClients,
+  getGasParameters: () => getGasParameters,
   getNetworkEnvKey: () => getNetworkEnvKey,
   getNetworkKey: () => getNetworkKey,
   getTestClient: () => getTestClient,
@@ -518,6 +519,81 @@ function getViemAccount(chainType, accountType) {
   });
 }
 
+// src/utils/getGasParameters.ts
+var NETWORK_MINIMUMS = {
+  polygon: {
+    minTipCap: BigInt(3e10),
+    // 30 gwei
+    minBaseFee: BigInt(3e10)
+    // 30 gwei
+  }
+  // Add other networks as needed
+};
+async function getGasParameters(chain, priorityMultiplier = 1, maxFeeMultiplier = 1) {
+  const { publicClient } = getFallbackClients(chain);
+  try {
+    const block = await publicClient.getBlock();
+    const baseFee = block.baseFeePerGas ?? BigInt(0);
+    const networkMinimums = getNetworkMinimums(chain);
+    const suggestedPriorityFee = await getSuggestedPriorityFee(publicClient, chain);
+    const calculatedPriorityFee = calculatePriorityFee(
+      suggestedPriorityFee,
+      priorityMultiplier
+    );
+    const priorityFee = calculatedPriorityFee > networkMinimums.minTipCap ? calculatedPriorityFee : networkMinimums.minTipCap;
+    const calculatedMaxFee = calculateMaxFee(baseFee, priorityFee, maxFeeMultiplier);
+    const minRequiredMaxFee = networkMinimums.minBaseFee + priorityFee;
+    const maxFeePerGas = calculatedMaxFee > minRequiredMaxFee ? calculatedMaxFee : minRequiredMaxFee;
+    return {
+      maxFeePerGas,
+      maxPriorityFeePerGas: priorityFee
+    };
+  } catch (error) {
+    const networkMinimums = getNetworkMinimums(chain);
+    const gasPrice = await publicClient.getGasPrice();
+    const priorityFee = networkMinimums.minTipCap;
+    return {
+      maxFeePerGas: gasPrice > networkMinimums.minBaseFee + priorityFee ? gasPrice : networkMinimums.minBaseFee + priorityFee,
+      maxPriorityFeePerGas: priorityFee
+    };
+  }
+}
+function getNetworkMinimums(chain) {
+  const isPolygon = chain.chainId === 137 || chain.name.toLowerCase().includes("polygon");
+  if (isPolygon) {
+    return NETWORK_MINIMUMS.polygon;
+  }
+  return {
+    minTipCap: BigInt(15e8),
+    // 1.5 gwei
+    minBaseFee: BigInt(1e9)
+    // 1 gwei
+  };
+}
+async function getSuggestedPriorityFee(publicClient, chain) {
+  try {
+    const isPolygon = chain.chainId === 137 || chain.name.toLowerCase().includes("polygon");
+    const blocksToAnalyze = isPolygon ? 5 : 10;
+    const blocks = await Promise.all(
+      Array.from(
+        { length: blocksToAnalyze },
+        (_, i) => publicClient.getBlock({ blockNumber: BigInt(-1 - i) })
+      )
+    );
+    const priorityFees = blocks.map((block) => block.baseFeePerGas ?? BigInt(0)).sort((a, b) => a < b ? -1 : 1);
+    const index = isPolygon ? Math.floor(priorityFees.length * 0.75) : Math.floor(priorityFees.length * 0.5);
+    return priorityFees[index];
+  } catch {
+    return getNetworkMinimums(chain).minTipCap;
+  }
+}
+function calculatePriorityFee(basePriorityFee, multiplier) {
+  return BigInt(Math.ceil(Number(basePriorityFee) * multiplier));
+}
+function calculateMaxFee(baseFee, priorityFee, multiplier) {
+  return BigInt(Math.ceil(Number(baseFee) * multiplier)) + priorityFee;
+}
+
 // src/constants/config.ts
 var config = {
   DEFAULT_BLOCK_CONFIRMATIONS: 2
@@ -532,7 +608,7 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
     "contract deploy",
     chain.name
   );
-  const contractFactory = await hre.ethers.getContractFactory(contractName);
+  const contractFactory = await hre.ethers.getContractFactory(contractName, { libraries: txParams?.libraries });
   const deployOverrides = txParams?.gasLimit ? { gasLimit: txParams.gasLimit } : {};
   const deployTx = contractFactory.getDeployTransaction(
     ...contractConstructorArgs,
@@ -641,6 +717,7 @@ var TokenSender = class {
   getClients,
   getEnvVar,
   getFallbackClients,
+  getGasParameters,
   getNetworkEnvKey,
   getNetworkKey,
   getTestClient,
