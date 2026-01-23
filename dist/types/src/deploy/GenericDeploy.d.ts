@@ -1,14 +1,15 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { TransactionReceipt } from 'ethers';
 export interface ITxParams {
     gasLimit: bigint;
     libraries: Record<string, string>;
 }
 export interface IDeployResult {
-    hash: string;
     address: string;
     chainType: string;
     chainName: string;
-    proxyAdminAddress: string;
+    chainId: number;
+    receipt: TransactionReceipt;
 }
 export interface IGenericDeployParams {
     hre: HardhatRuntimeEnvironment;

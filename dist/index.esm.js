@@ -570,7 +570,14 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
   const receipt = await contract.deploymentTransaction()?.wait();
   const deploymentAddress = await contract.getAddress();
   if (hre.tenderly) {
-    await hre.tenderly.verify({ name: contractName, address: deploymentAddress });
+    try {
+      await hre.tenderly.verify({
+        name: contractName,
+        address: deploymentAddress
+      });
+    } catch (e) {
+      console.error(JSON.stringify(e));
+    }
   }
   log(
     `Deployed at: ${deploymentAddress}`,
@@ -578,11 +585,11 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
     chain.name
   );
   return {
-    hash: contract.deploymentTransaction()?.hash,
     address: deploymentAddress,
     chainName: chain.name,
     chainType: chain.type,
-    proxyAdminAddress: extractProxyAdminAddress(receipt)
+    chainId: chain.chainId,
+    receipt
   };
 };
 

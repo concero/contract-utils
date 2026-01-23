@@ -1,8 +1,8 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { TransactionReceipt } from 'ethers';
 
 import { conceroNetworks } from '../constants/conceroNetworks';
 import { getTrezorDeployEnabled, log } from '../utils';
-import { extractProxyAdminAddress } from '../utils/extractProxyAdminAddress';
 
 export interface ITxParams {
 	gasLimit: bigint;
@@ -10,11 +10,11 @@ export interface ITxParams {
 }
 
 export interface IDeployResult {
-	hash: string;
 	address: string;
 	chainType: string;
 	chainName: string;
-	proxyAdminAddress: string;
+	chainId: number;
+	receipt: TransactionReceipt;
 }
 
 export interface IGenericDeployParams {
@@ -59,7 +59,14 @@ export const genericDeploy = async (
 	const deploymentAddress = await contract.getAddress();
 
 	if (hre.tenderly) {
-		await hre.tenderly.verify({ name: contractName, address: deploymentAddress });
+		try {
+			await hre.tenderly.verify({
+				name: contractName,
+				address: deploymentAddress,
+			});
+		} catch (e) {
+			console.error(JSON.stringify(e));
+		}
 	}
 
 	log(
@@ -69,10 +76,10 @@ export const genericDeploy = async (
 	);
 
 	return {
-		hash: contract.deploymentTransaction()?.hash,
 		address: deploymentAddress,
 		chainName: chain.name,
 		chainType: chain.type,
-		proxyAdminAddress: extractProxyAdminAddress(receipt)
+		chainId: chain.chainId,
+		receipt
 	};
 };
