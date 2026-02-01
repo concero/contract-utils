@@ -34,7 +34,9 @@ export const genericDeploy = async (
 	const chain = conceroNetworks[hre.network.name];
 	const isTrezorDeployEnabled = getTrezorDeployEnabled();
 
-	log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, 'contract deploy', chain.name);
+	log(`isTrezorDeployEnabled: ${isTrezorDeployEnabled}`, 'genericDeploy');
+
+	log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, 'genericDeploy', chain.name);
 
 	const contractFactory = await hre.ethers.getContractFactory(contractName, {
 		libraries: txParams?.libraries,
