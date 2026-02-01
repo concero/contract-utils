@@ -84,12 +84,16 @@ export async function trezorSendTx(
 	let maxPriorityFeePerGas = txParams.maxPriorityFeePerGas;
 
 	if (!forceLegacy && gasPrice == null && (maxFeePerGas == null || maxPriorityFeePerGas == null)) {
-		const fees = await publicClient.estimateFeesPerGas();
-		if ('maxFeePerGas' in fees && 'maxPriorityFeePerGas' in fees) {
-			maxFeePerGas = fees.maxFeePerGas;
-			maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
-		} else if ('gasPrice' in fees) {
-			gasPrice = (fees as { gasPrice: bigint }).gasPrice;
+		try {
+			const fees = await publicClient.estimateFeesPerGas();
+			if ('maxFeePerGas' in fees && 'maxPriorityFeePerGas' in fees) {
+				maxFeePerGas = fees.maxFeePerGas;
+				maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
+			} else if ('gasPrice' in fees) {
+				gasPrice = (fees as { gasPrice: bigint }).gasPrice;
+			}
+		} catch (e) {
+			log(`EIP-1559 not supported for ${chainId}, using legacy gas price`, 'trezorSendTx');
 		}
 	}
 

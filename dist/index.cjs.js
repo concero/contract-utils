@@ -659,12 +659,16 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   let maxFeePerGas = txParams.maxFeePerGas;
   let maxPriorityFeePerGas = txParams.maxPriorityFeePerGas;
   if (!forceLegacy && gasPrice == null && (maxFeePerGas == null || maxPriorityFeePerGas == null)) {
-    const fees = await publicClient.estimateFeesPerGas();
-    if ("maxFeePerGas" in fees && "maxPriorityFeePerGas" in fees) {
-      maxFeePerGas = fees.maxFeePerGas;
-      maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
-    } else if ("gasPrice" in fees) {
-      gasPrice = fees.gasPrice;
+    try {
+      const fees = await publicClient.estimateFeesPerGas();
+      if ("maxFeePerGas" in fees && "maxPriorityFeePerGas" in fees) {
+        maxFeePerGas = fees.maxFeePerGas;
+        maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
+      } else if ("gasPrice" in fees) {
+        gasPrice = fees.gasPrice;
+      }
+    } catch (e) {
+      log(`EIP-1559 not supported for ${chainId}, using legacy gas price`, "trezorSendTx");
     }
   }
   const useEip1559 = !forceLegacy && maxFeePerGas != null && maxPriorityFeePerGas != null;
