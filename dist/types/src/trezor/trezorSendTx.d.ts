@@ -1,4 +1,5 @@
 import type { Address, Hash, Hex, PublicClient } from 'viem';
+export declare const defaultTrezorPath = "m/44'/60'/0'/0/0";
 export interface ITrezorViemParams {
     publicClient: PublicClient;
 }

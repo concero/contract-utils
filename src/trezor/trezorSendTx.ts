@@ -2,9 +2,10 @@ import TrezorConnect from '@trezor/connect';
 import type { Address, Hash, Hex, PublicClient } from 'viem';
 import { isHex, serializeTransaction, toHex } from 'viem';
 import { log } from '../utils';
+import { getTrezorAddress } from './getTrezorAddress';
 import { initTrezorOnce } from './initTrezorOnce';
 
-const defaultPath = "m/44'/60'/0'/0/0";
+export const defaultTrezorPath = "m/44'/60'/0'/0/0";
 
 export interface ITrezorViemParams {
 	publicClient: PublicClient;
@@ -43,7 +44,7 @@ export async function trezorSendTx(
 	viemParams: ITrezorViemParams,
 	txParams: ITrezorTxParams,
 	trezorPrams: ITrezorParams = {
-		path: defaultPath,
+		path: defaultTrezorPath,
 		showFromAddressOnTrezor: false,
 		forceLegacy: false,
 	}
@@ -52,17 +53,11 @@ export async function trezorSendTx(
 
 	const { publicClient } = viemParams;
 	const { to = null, value = 0n, data = '0x' } = txParams;
-	const { path, showFromAddressOnTrezor, forceLegacy } = trezorPrams;
+	const { path, forceLegacy } = trezorPrams;
 
 	const chainId = publicClient.chain?.id ?? (await publicClient.getChainId());
 
-	const addrRes = await TrezorConnect.ethereumGetAddress({
-		path,
-		showOnTrezor: showFromAddressOnTrezor,
-	});
-
-	if (!addrRes.success) throw new Error(addrRes.payload.error);
-	const from = addrRes.payload.address as Address;
+	const from = await getTrezorAddress(path);
 
 	log(`Deploy from ${from}`, 'trezorSendTx');
 

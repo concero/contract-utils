@@ -40,6 +40,7 @@ __export(index_exports, {
   createViemAccountGetter: () => createViemAccountGetter,
   createViemChain: () => createViemChain,
   createWalletGetter: () => createWalletGetter,
+  defaultTrezorPath: () => defaultTrezorPath,
   err: () => err,
   ethersSignerCallContract: () => ethersSignerCallContract,
   extractProxyAdminAddress: () => extractProxyAdminAddress,
@@ -53,6 +54,7 @@ __export(index_exports, {
   getNetworkEnvKey: () => getNetworkEnvKey,
   getNetworkKey: () => getNetworkKey,
   getTestClient: () => getTestClient,
+  getTrezorAddress: () => getTrezorAddress,
   getTrezorDeployEnabled: () => getTrezorDeployEnabled,
   getViemAccount: () => getViemAccount,
   getWallet: () => getWallet,
@@ -598,12 +600,8 @@ var config = {
   DEFAULT_BLOCK_CONFIRMATIONS: 2
 };
 
-// src/trezor/trezorDeployContract.ts
-var import_viem5 = require("viem");
-
-// src/trezor/trezorSendTx.ts
-var import_connect2 = __toESM(require("@trezor/connect"));
-var import_viem4 = require("viem");
+// src/trezor/getTrezorAddress.ts
+var import_connect3 = __toESM(require("@trezor/connect"));
 
 // src/trezor/initTrezorOnce.ts
 var import_connect = __toESM(require("@trezor/connect"));
@@ -621,7 +619,9 @@ async function initTrezorOnce() {
 }
 
 // src/trezor/trezorSendTx.ts
-var defaultPath = "m/44'/60'/0'/0/0";
+var import_connect2 = __toESM(require("@trezor/connect"));
+var import_viem4 = require("viem");
+var defaultTrezorPath = "m/44'/60'/0'/0/0";
 function normalizeHex(hex, name) {
   if (!hex.startsWith("0x")) hex = `0x${hex}`;
   if (!(0, import_viem4.isHex)(hex)) throw new Error(`${name} must be 0x-prefixed hex`);
@@ -633,21 +633,16 @@ function yParityFromV(v) {
   return Number((v - 35n) % 2n);
 }
 async function trezorSendTx(viemParams, txParams, trezorPrams = {
-  path: defaultPath,
+  path: defaultTrezorPath,
   showFromAddressOnTrezor: false,
   forceLegacy: false
 }) {
   await initTrezorOnce();
   const { publicClient } = viemParams;
   const { to = null, value = 0n, data = "0x" } = txParams;
-  const { path: path2, showFromAddressOnTrezor, forceLegacy } = trezorPrams;
+  const { path: path2, forceLegacy } = trezorPrams;
   const chainId = publicClient.chain?.id ?? await publicClient.getChainId();
-  const addrRes = await import_connect2.default.ethereumGetAddress({
-    path: path2,
-    showOnTrezor: showFromAddressOnTrezor
-  });
-  if (!addrRes.success) throw new Error(addrRes.payload.error);
-  const from = addrRes.payload.address;
+  const from = await getTrezorAddress(path2);
   log(`Deploy from ${from}`, "trezorSendTx");
   const normData = normalizeHex(data, "data");
   const nonce = txParams.nonce ?? await publicClient.getTransactionCount({
@@ -726,7 +721,19 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   }
 }
 
+// src/trezor/getTrezorAddress.ts
+var getTrezorAddress = async (path2 = defaultTrezorPath) => {
+  await initTrezorOnce();
+  const addrRes = await import_connect3.default.ethereumGetAddress({
+    path: path2,
+    showOnTrezor: false
+  });
+  if (!addrRes.success) throw new Error(addrRes.payload.error);
+  return addrRes.payload.address;
+};
+
 // src/trezor/trezorDeployContract.ts
+var import_viem5 = require("viem");
 async function trezorDeployContract(viemParams, deployParams, trezorParams) {
   const { publicClient } = viemParams;
   const { abi, bytecode, args, value = 0n, ...overrides } = deployParams;
@@ -885,6 +892,7 @@ var TokenSender = class {
   createViemAccountGetter,
   createViemChain,
   createWalletGetter,
+  defaultTrezorPath,
   err,
   ethersSignerCallContract,
   extractProxyAdminAddress,
@@ -898,6 +906,7 @@ var TokenSender = class {
   getNetworkEnvKey,
   getNetworkKey,
   getTestClient,
+  getTrezorAddress,
   getTrezorDeployEnabled,
   getViemAccount,
   getWallet,
