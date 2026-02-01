@@ -1,6 +1,7 @@
 import TrezorConnect from '@trezor/connect';
 import type { Address, Hash, Hex, PublicClient } from 'viem';
 import { isHex, serializeTransaction, toHex } from 'viem';
+import { log } from '../utils';
 
 const defaultPath = "m/44'/60'/0'/0/0";
 
@@ -68,6 +69,8 @@ export async function trezorSendTx(
 	if (!addrRes.success) throw new Error(addrRes.payload.error);
 	const from = addrRes.payload.address as Address;
 
+	log(`Deploy from ${from}`, 'trezorSendTx');
+
 	const normData = normalizeHex(data, 'data');
 
 	const nonce =
@@ -90,11 +93,7 @@ export async function trezorSendTx(
 	let maxFeePerGas = txParams.maxFeePerGas;
 	let maxPriorityFeePerGas = txParams.maxPriorityFeePerGas;
 
-	if (
-		!forceLegacy &&
-		gasPrice == null &&
-		(maxFeePerGas == null || maxPriorityFeePerGas == null)
-	) {
+	if (!forceLegacy && gasPrice == null && (maxFeePerGas == null || maxPriorityFeePerGas == null)) {
 		const fees = await publicClient.estimateFeesPerGas();
 		if ('maxFeePerGas' in fees && 'maxPriorityFeePerGas' in fees) {
 			maxFeePerGas = fees.maxFeePerGas;
@@ -104,8 +103,7 @@ export async function trezorSendTx(
 		}
 	}
 
-	const useEip1559 =
-		!forceLegacy && maxFeePerGas != null && maxPriorityFeePerGas != null;
+	const useEip1559 = !forceLegacy && maxFeePerGas != null && maxPriorityFeePerGas != null;
 
 	if (!useEip1559 && gasPrice == null) {
 		gasPrice = await publicClient.getGasPrice();
