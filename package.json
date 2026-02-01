@@ -29,7 +29,7 @@
     "concero"
   ],
   "engines": {
-    "node": ">=18"
+    "node": "22"
   },
   "scripts": {
     "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --outfile=dist/index.cjs.js",
@@ -74,6 +74,6 @@
   },
   "dependencies": {
     "@concero/concero-networks": "https://github.com/concero/concero-networks",
-    "@trezor/connect": "^9.7.1"
+    "@trezor/connect": "9.7.1"
   }
 }
