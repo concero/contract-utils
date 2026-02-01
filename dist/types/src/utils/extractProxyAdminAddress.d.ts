@@ -1,2 +1,2 @@
-import { ethers } from 'ethers';
-export declare function extractProxyAdminAddress(receipt: ethers.TransactionReceipt | null): string;
+import { IDeployResult } from '../deploy/GenericDeploy';
+export declare function extractProxyAdminAddress(receipt: IDeployResult['receipt'] | null): string;

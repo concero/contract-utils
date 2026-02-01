@@ -1,5 +1,6 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { TransactionReceipt } from 'ethers';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import type { WaitForTransactionReceiptReturnType } from 'viem/actions/public/waitForTransactionReceipt';
 export interface ITxParams {
     gasLimit: bigint;
     libraries: Record<string, string>;
@@ -9,7 +10,7 @@ export interface IDeployResult {
     chainType: string;
     chainName: string;
     chainId: number;
-    receipt: TransactionReceipt;
+    receipt: TransactionReceipt | WaitForTransactionReceiptReturnType;
 }
 export interface IGenericDeployParams {
     hre: HardhatRuntimeEnvironment;

@@ -73,6 +73,7 @@
     "viem": "2.24.2"
   },
   "dependencies": {
-    "@concero/concero-networks": "https://github.com/concero/concero-networks"
+    "@concero/concero-networks": "https://github.com/concero/concero-networks",
+    "@trezor/connect": "^9.7.1"
   }
 }

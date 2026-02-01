@@ -1,7 +1,7 @@
-import { Chain, type TestClient, type PublicClient, type WalletClient } from "viem";
-import { type PrivateKeyAccount } from "viem/accounts";
-import { type ConceroNetwork, type NetworkType } from "../types";
-import { type BaseAccountTypePrefixes } from "../utils";
+import { Chain, type PublicClient, type TestClient, type WalletClient } from 'viem';
+import { type PrivateKeyAccount } from 'viem/accounts';
+import { type ConceroNetwork, type NetworkType } from '../types';
+import { type BaseAccountTypePrefixes } from '../utils';
 declare function getClients(viemChain: Chain, url: string | undefined, account?: PrivateKeyAccount): {
     walletClient: WalletClient;
     publicClient: PublicClient;
