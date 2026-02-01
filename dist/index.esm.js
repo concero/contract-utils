@@ -226312,7 +226312,6 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
   const chain = conceroNetworks[hre.network.name];
   const isTrezorDeployEnabled = getTrezorDeployEnabled();
   log(`isTrezorDeployEnabled: ${isTrezorDeployEnabled}`, "genericDeploy");
-  log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, "genericDeploy", chain.name);
   const contractFactory = await hre.ethers.getContractFactory(contractName, {
     libraries: txParams?.libraries
   });
@@ -226333,6 +226332,7 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
     deploymentAddress = tx.contractAddress;
     receipt = await publicClient.waitForTransactionReceipt({ hash: tx.hash });
   } else {
+    log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, "genericDeploy", chain.name);
     const contract = await contractFactory.deploy(...contractConstructorArgs, deployOverrides);
     receipt = await contract.deploymentTransaction()?.wait();
     deploymentAddress = await contract.getAddress();
