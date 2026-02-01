@@ -32,7 +32,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --outfile=dist/index.cjs.js",
+    "build:cjs": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --external:usb --external:@trezor/connect --outfile=dist/index.cjs.js",
     "build:esm": "esbuild ./src/index.ts --bundle --platform=node --format=esm --sourcemap --external:viem --external:ethers --external:hardhat --external:hardhat-deploy --external:@concero/concero-networks --outfile=dist/index.esm.js",
     "build": "npm run build:types && npm run build:cjs && npm run build:esm",
     "build:types": "tsc --project tsconfig.json",
@@ -49,9 +49,6 @@
     "@tenderly/hardhat-tenderly": {
       "optional": true
     }
-  },
-  "resolutions": {
-    "usb": "2.17.0"
   },
   "devDependencies": {
     "@chainlink/hardhat-chainlink": "0.0.4",
