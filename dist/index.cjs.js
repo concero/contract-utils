@@ -602,8 +602,25 @@ var config = {
 var import_viem5 = require("viem");
 
 // src/trezor/trezorSendTx.ts
-var import_connect = __toESM(require("@trezor/connect"));
+var import_connect2 = __toESM(require("@trezor/connect"));
 var import_viem4 = require("viem");
+
+// src/trezor/initTrezorOnce.ts
+var import_connect = __toESM(require("@trezor/connect"));
+var isTrezorInitialized = false;
+async function initTrezorOnce() {
+  if (isTrezorInitialized) return;
+  await import_connect.default.init({
+    manifest: {
+      email: "nikita@concero.io",
+      appUrl: "https://concero.io",
+      appName: "concero"
+    }
+  });
+  isTrezorInitialized = true;
+}
+
+// src/trezor/trezorSendTx.ts
 var defaultPath = "m/44'/60'/0'/0/0";
 function normalizeHex(hex, name) {
   if (!hex.startsWith("0x")) hex = `0x${hex}`;
@@ -620,18 +637,12 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   showFromAddressOnTrezor: false,
   forceLegacy: false
 }) {
-  await import_connect.default.init({
-    manifest: {
-      email: "nikita@concero.io",
-      appUrl: "https://concero.io",
-      appName: "concero"
-    }
-  });
+  await initTrezorOnce();
   const { publicClient } = viemParams;
   const { to = null, value = 0n, data = "0x" } = txParams;
   const { path: path2, showFromAddressOnTrezor, forceLegacy } = trezorPrams;
   const chainId = publicClient.chain?.id ?? await publicClient.getChainId();
-  const addrRes = await import_connect.default.ethereumGetAddress({
+  const addrRes = await import_connect2.default.ethereumGetAddress({
     path: path2,
     showOnTrezor: showFromAddressOnTrezor
   });
@@ -679,7 +690,7 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   } else {
     txForTrezor.gasPrice = (0, import_viem4.toHex)(gasPrice);
   }
-  const signRes = await import_connect.default.ethereumSignTransaction({
+  const signRes = await import_connect2.default.ethereumSignTransaction({
     path: path2,
     transaction: txForTrezor
   });
@@ -729,6 +740,30 @@ async function trezorDeployContract(viemParams, deployParams, trezorParams) {
   if (!receipt.contractAddress)
     throw new Error("No contractAddress in receipt");
   return { hash, contractAddress: receipt.contractAddress };
+}
+
+// src/trezor/trezorWriteContract.ts
+var import_viem6 = require("viem");
+async function trezorWriteContract(viemParams, writeContractParams, trezorParams) {
+  const {
+    address,
+    abi,
+    functionName,
+    args,
+    value = 0n,
+    ...overrides
+  } = writeContractParams;
+  const data = (0, import_viem6.encodeFunctionData)({ abi, functionName, args });
+  return trezorSendTx(
+    viemParams,
+    {
+      to: address,
+      data,
+      value,
+      ...overrides
+    },
+    trezorParams
+  );
 }
 
 // src/deploy/GenericDeploy.ts
@@ -783,7 +818,7 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
 };
 
 // src/tokens/TokenSender.ts
-var import_viem6 = require("viem");
+var import_viem7 = require("viem");
 var TokenSender = class {
   walletClient;
   publicClient;
@@ -795,36 +830,36 @@ var TokenSender = class {
     const [tokenDecimals, tokenSymbol, tokenBalance] = await Promise.all([
       this.publicClient.readContract({
         address: tokenAddress,
-        abi: import_viem6.erc20Abi,
+        abi: import_viem7.erc20Abi,
         functionName: "decimals",
         args: []
       }),
       this.publicClient.readContract({
         address: tokenAddress,
-        abi: import_viem6.erc20Abi,
+        abi: import_viem7.erc20Abi,
         functionName: "symbol",
         args: []
       }),
       this.publicClient.readContract({
         address: tokenAddress,
-        abi: import_viem6.erc20Abi,
+        abi: import_viem7.erc20Abi,
         functionName: "balanceOf",
         args: [this.walletClient.account?.address]
       })
     ]);
     console.log(
-      `Current ${tokenSymbol} balance ${(0, import_viem6.formatUnits)(tokenBalance, tokenDecimals)}`
+      `Current ${tokenSymbol} balance ${(0, import_viem7.formatUnits)(tokenBalance, tokenDecimals)}`
     );
-    if ((0, import_viem6.parseUnits)(amount, tokenDecimals) > tokenBalance) {
+    if ((0, import_viem7.parseUnits)(amount, tokenDecimals) > tokenBalance) {
       throw new Error(
-        `Insufficient balance. Required: ${amount}, available: ${(0, import_viem6.formatUnits)(tokenBalance, tokenDecimals)}`
+        `Insufficient balance. Required: ${amount}, available: ${(0, import_viem7.formatUnits)(tokenBalance, tokenDecimals)}`
       );
     }
     const txHash = await this.walletClient.writeContract({
       address: tokenAddress,
-      abi: import_viem6.erc20Abi,
+      abi: import_viem7.erc20Abi,
       functionName: "transfer",
-      args: [recipient, (0, import_viem6.parseUnits)(amount, tokenDecimals)],
+      args: [recipient, (0, import_viem7.parseUnits)(amount, tokenDecimals)],
       chain: this.walletClient.chain,
       account: this.walletClient.account
     });
@@ -838,30 +873,6 @@ var TokenSender = class {
     return txHash;
   }
 };
-
-// src/trezor/trezorWriteContract.ts
-var import_viem7 = require("viem");
-async function trezorWriteContract(viemParams, writeContractParams, trezorParams) {
-  const {
-    address,
-    abi,
-    functionName,
-    args,
-    value = 0n,
-    ...overrides
-  } = writeContractParams;
-  const data = (0, import_viem7.encodeFunctionData)({ abi, functionName, args });
-  return trezorSendTx(
-    viemParams,
-    {
-      to: address,
-      data,
-      value,
-      ...overrides
-    },
-    trezorParams
-  );
-}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TokenSender,

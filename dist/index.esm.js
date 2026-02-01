@@ -225620,7 +225620,7 @@ var require_lib26 = __commonJS({
         } : null
       });
     };
-    var TrezorConnect2 = (0, factory_1.factory)({
+    var TrezorConnect3 = (0, factory_1.factory)({
       eventEmitter: exports2.eventEmitter,
       manifest,
       init,
@@ -225630,7 +225630,7 @@ var require_lib26 = __commonJS({
       cancel,
       dispose
     }, {});
-    exports2.default = TrezorConnect2;
+    exports2.default = TrezorConnect3;
     tslib_1.__exportStar(require_exports(), exports2);
   }
 });
@@ -226177,8 +226177,25 @@ var config = {
 import { encodeDeployData } from "viem";
 
 // src/trezor/trezorSendTx.ts
-var import_connect = __toESM(require_lib26());
+var import_connect2 = __toESM(require_lib26());
 import { isHex, serializeTransaction, toHex as toHex2 } from "viem";
+
+// src/trezor/initTrezorOnce.ts
+var import_connect = __toESM(require_lib26());
+var isTrezorInitialized = false;
+async function initTrezorOnce() {
+  if (isTrezorInitialized) return;
+  await import_connect.default.init({
+    manifest: {
+      email: "nikita@concero.io",
+      appUrl: "https://concero.io",
+      appName: "concero"
+    }
+  });
+  isTrezorInitialized = true;
+}
+
+// src/trezor/trezorSendTx.ts
 var defaultPath = "m/44'/60'/0'/0/0";
 function normalizeHex(hex, name) {
   if (!hex.startsWith("0x")) hex = `0x${hex}`;
@@ -226195,18 +226212,12 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   showFromAddressOnTrezor: false,
   forceLegacy: false
 }) {
-  await import_connect.default.init({
-    manifest: {
-      email: "nikita@concero.io",
-      appUrl: "https://concero.io",
-      appName: "concero"
-    }
-  });
+  await initTrezorOnce();
   const { publicClient } = viemParams;
   const { to = null, value = 0n, data = "0x" } = txParams;
   const { path: path2, showFromAddressOnTrezor, forceLegacy } = trezorPrams;
   const chainId = publicClient.chain?.id ?? await publicClient.getChainId();
-  const addrRes = await import_connect.default.ethereumGetAddress({
+  const addrRes = await import_connect2.default.ethereumGetAddress({
     path: path2,
     showOnTrezor: showFromAddressOnTrezor
   });
@@ -226254,7 +226265,7 @@ async function trezorSendTx(viemParams, txParams, trezorPrams = {
   } else {
     txForTrezor.gasPrice = toHex2(gasPrice);
   }
-  const signRes = await import_connect.default.ethereumSignTransaction({
+  const signRes = await import_connect2.default.ethereumSignTransaction({
     path: path2,
     transaction: txForTrezor
   });
@@ -226304,6 +226315,30 @@ async function trezorDeployContract(viemParams, deployParams, trezorParams) {
   if (!receipt.contractAddress)
     throw new Error("No contractAddress in receipt");
   return { hash, contractAddress: receipt.contractAddress };
+}
+
+// src/trezor/trezorWriteContract.ts
+import { encodeFunctionData } from "viem";
+async function trezorWriteContract(viemParams, writeContractParams, trezorParams) {
+  const {
+    address,
+    abi,
+    functionName,
+    args,
+    value = 0n,
+    ...overrides
+  } = writeContractParams;
+  const data = encodeFunctionData({ abi, functionName, args });
+  return trezorSendTx(
+    viemParams,
+    {
+      to: address,
+      data,
+      value,
+      ...overrides
+    },
+    trezorParams
+  );
 }
 
 // src/deploy/GenericDeploy.ts
@@ -226417,30 +226452,6 @@ var TokenSender = class {
     return txHash;
   }
 };
-
-// src/trezor/trezorWriteContract.ts
-import { encodeFunctionData } from "viem";
-async function trezorWriteContract(viemParams, writeContractParams, trezorParams) {
-  const {
-    address,
-    abi,
-    functionName,
-    args,
-    value = 0n,
-    ...overrides
-  } = writeContractParams;
-  const data = encodeFunctionData({ abi, functionName, args });
-  return trezorSendTx(
-    viemParams,
-    {
-      to: address,
-      data,
-      value,
-      ...overrides
-    },
-    trezorParams
-  );
-}
 export {
   TokenSender,
   baseAccountTypePrefixes,

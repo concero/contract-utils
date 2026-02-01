@@ -4,7 +4,7 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Hex } from 'viem';
 import type { WaitForTransactionReceiptReturnType } from 'viem/actions/public/waitForTransactionReceipt';
 import { conceroNetworks } from '../constants/conceroNetworks';
-import { trezorDeployContract } from '../trezor/trezorDeployContract';
+import { trezorDeployContract } from '../trezor';
 import { getFallbackClients, getTrezorDeployEnabled, log } from '../utils';
 
 export interface ITxParams {

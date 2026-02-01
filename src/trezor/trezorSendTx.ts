@@ -2,6 +2,7 @@ import TrezorConnect from '@trezor/connect';
 import type { Address, Hash, Hex, PublicClient } from 'viem';
 import { isHex, serializeTransaction, toHex } from 'viem';
 import { log } from '../utils';
+import { initTrezorOnce } from './initTrezorOnce';
 
 const defaultPath = "m/44'/60'/0'/0/0";
 
@@ -47,13 +48,7 @@ export async function trezorSendTx(
 		forceLegacy: false,
 	}
 ): Promise<Hash> {
-	await TrezorConnect.init({
-		manifest: {
-			email: 'nikita@concero.io',
-			appUrl: 'https://concero.io',
-			appName: 'concero',
-		},
-	});
+	await initTrezorOnce();
 
 	const { publicClient } = viemParams;
 	const { to = null, value = 0n, data = '0x' } = txParams;
