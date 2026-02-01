@@ -2316,7 +2316,7 @@
     "@trezor/type-utils" "1.2.0"
     "@trezor/utils" "9.5.0"
 
-"@trezor/connect@^9.7.1":
+"@trezor/connect@9.7.1":
   version "9.7.1"
   resolved "https://registry.yarnpkg.com/@trezor/connect/-/connect-9.7.1.tgz#c998ff051a9c4090be56633317dad1f712b026e0"
   integrity sha512-W2ym0bs4FVmXByEr9gANBp+bRErzNcmqqqYzSJLOVkawxikqYXag2aCpdiXU3LlZbFbhFhIsT/fpDLfwiLRySA==
