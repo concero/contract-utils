@@ -99,7 +99,7 @@ export async function trezorSendTx(
 			maxFeePerGas = fees.maxFeePerGas;
 			maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
 		} else if ('gasPrice' in fees) {
-			gasPrice = fees.gasPrice;
+			gasPrice = (fees as { gasPrice: bigint }).gasPrice;
 		}
 	}
 

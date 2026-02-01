@@ -31,6 +31,7 @@ export const genericDeploy = async (
 	...contractConstructorArgs: any[]
 ): Promise<IDeployResult> => {
 	const [deployer] = await hre.ethers.getSigners();
+
 	const chain = conceroNetworks[hre.network.name];
 	const isTrezorDeployEnabled = getTrezorDeployEnabled();
 
