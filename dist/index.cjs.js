@@ -292,17 +292,12 @@ var hardhatViemChain = (0, import_viem2.defineChain)({
 // src/utils/extractProxyAdminAddress.ts
 var import_ethers = require("ethers");
 function extractProxyAdminAddress(receipt) {
-  if (!receipt) return import_ethers.ethers.ZeroAddress;
   const adminChangedTopic = import_ethers.ethers.id("AdminChanged(address,address)");
   const adminChangedLog = receipt.logs.find((log2) => log2.topics[0] === adminChangedTopic);
-  if (!adminChangedLog) return import_ethers.ethers.ZeroAddress;
-  try {
-    const abiCoder = import_ethers.ethers.AbiCoder.defaultAbiCoder();
-    const [, newAdmin] = abiCoder.decode(["address", "address"], adminChangedLog.data);
-    return newAdmin;
-  } catch {
-    return import_ethers.ethers.ZeroAddress;
-  }
+  if (!adminChangedLog) throw new Error("AdminChanged(address,address) log not found");
+  const abiCoder = import_ethers.ethers.AbiCoder.defaultAbiCoder();
+  const [, newAdmin] = abiCoder.decode(["address", "address"], adminChangedLog.data);
+  return newAdmin;
 }
 
 // src/utils/createEnvUpdater.ts
@@ -438,9 +433,7 @@ var conceroNetworks = {
 };
 
 // src/utils/getViemClients.ts
-function getClients(viemChain, url, account = (0, import_accounts.privateKeyToAccount)(
-  `0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`
-)) {
+function getClients(viemChain, url, account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`)) {
   const publicClient = (0, import_viem3.createPublicClient)({
     transport: (0, import_viem3.http)(url),
     chain: viemChain
@@ -465,22 +458,15 @@ function getFallbackClients(chain, account) {
   if (!account) {
     switch (chain.type) {
       case "mainnet":
-        account = (0, import_accounts.privateKeyToAccount)(
-          `0x${process.env.MAINNET_DEPLOYER_PRIVATE_KEY}`
-        );
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.MAINNET_DEPLOYER_PRIVATE_KEY}`);
         break;
       case "testnet":
-        account = (0, import_accounts.privateKeyToAccount)(
-          `0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`,
-          {
-            nonceManager: import_viem3.nonceManager
-          }
-        );
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`, {
+          nonceManager: import_viem3.nonceManager
+        });
         break;
       case "localhost":
-        account = (0, import_accounts.privateKeyToAccount)(
-          `0x${process.env.LOCALHOST_DEPLOYER_PRIVATE_KEY}`
-        );
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.LOCALHOST_DEPLOYER_PRIVATE_KEY}`);
         break;
       default:
         throw new Error(`Unsupported chain type: ${chain.type}`);
@@ -802,6 +788,7 @@ var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstruct
     );
     deploymentAddress = tx.contractAddress;
     receipt = await publicClient.waitForTransactionReceipt({ hash: tx.hash });
+    if (receipt.status !== "success") throw new Error(`Deploy transaction reverted ${tx.hash}`);
   } else {
     log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, "genericDeploy", chain.name);
     const contract = await contractFactory.deploy(...contractConstructorArgs, deployOverrides);

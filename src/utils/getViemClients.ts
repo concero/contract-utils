@@ -7,24 +7,22 @@ import {
 	http,
 	nonceManager,
 	publicActions,
-	walletActions,
 	type PublicClient,
 	type TestClient,
+	walletActions,
 	type WalletClient,
 } from 'viem';
-import { privateKeyToAccount, type PrivateKeyAccount } from 'viem/accounts';
+import { type PrivateKeyAccount, privateKeyToAccount } from 'viem/accounts';
 
 import { conceroNetworks } from '../constants/conceroNetworks';
 import { type ConceroNetwork, type NetworkType } from '../types';
-import { getWallet, type BaseAccountTypePrefixes } from '../utils';
+import { type BaseAccountTypePrefixes, getWallet } from '../utils';
 import { localhostViemChain } from './localhostViemChain';
 
 function getClients(
 	viemChain: Chain,
 	url: string | undefined,
-	account: PrivateKeyAccount = privateKeyToAccount(
-		`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`
-	)
+	account: PrivateKeyAccount = privateKeyToAccount(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`)
 ): {
 	walletClient: WalletClient;
 	publicClient: PublicClient;
@@ -69,22 +67,15 @@ function getFallbackClients(
 	if (!account) {
 		switch (chain.type) {
 			case 'mainnet':
-				account = privateKeyToAccount(
-					`0x${process.env.MAINNET_DEPLOYER_PRIVATE_KEY}`
-				);
+				account = privateKeyToAccount(`0x${process.env.MAINNET_DEPLOYER_PRIVATE_KEY}`);
 				break;
 			case 'testnet':
-				account = privateKeyToAccount(
-					`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`,
-					{
-						nonceManager: nonceManager,
-					}
-				);
+				account = privateKeyToAccount(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`, {
+					nonceManager: nonceManager,
+				});
 				break;
 			case 'localhost':
-				account = privateKeyToAccount(
-					`0x${process.env.LOCALHOST_DEPLOYER_PRIVATE_KEY}`
-				);
+				account = privateKeyToAccount(`0x${process.env.LOCALHOST_DEPLOYER_PRIVATE_KEY}`);
 				break;
 			default:
 				throw new Error(`Unsupported chain type: ${chain.type}`);
@@ -113,10 +104,7 @@ function getFallbackClients(
 	return { walletClient, publicClient, account };
 }
 
-function getViemAccount(
-	chainType: NetworkType,
-	accountType: keyof BaseAccountTypePrefixes
-) {
+function getViemAccount(chainType: NetworkType, accountType: keyof BaseAccountTypePrefixes) {
 	const privateKey = `0x${getWallet(chainType, accountType, 'privateKey')}`;
 
 	return privateKeyToAccount(privateKey as `0x${string}`, {
@@ -124,9 +112,7 @@ function getViemAccount(
 	});
 }
 
-export interface ViemAccountGetterConfig<
-	TPrefixes extends Record<string, string>,
-> {
+export interface ViemAccountGetterConfig<TPrefixes extends Record<string, string>> {
 	accountTypePrefixes: TPrefixes;
 	getWallet: (
 		chainType: NetworkType,
@@ -135,13 +121,10 @@ export interface ViemAccountGetterConfig<
 	) => string | undefined;
 }
 
-export function createViemAccountGetter<
-	TPrefixes extends Record<string, string>,
->(config: ViemAccountGetterConfig<TPrefixes>) {
-	function getViemAccount(
-		chainType: NetworkType,
-		accountType: keyof TPrefixes
-	) {
+export function createViemAccountGetter<TPrefixes extends Record<string, string>>(
+	config: ViemAccountGetterConfig<TPrefixes>
+) {
+	function getViemAccount(chainType: NetworkType, accountType: keyof TPrefixes) {
 		const privateKey = `0x${config.getWallet(chainType, accountType, 'privateKey')}`;
 
 		return privateKeyToAccount(privateKey as `0x${string}`, {

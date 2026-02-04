@@ -60,6 +60,7 @@ export const genericDeploy = async (
 
 		deploymentAddress = tx.contractAddress;
 		receipt = await publicClient.waitForTransactionReceipt({ hash: tx.hash });
+		if (receipt.status !== 'success') throw new Error(`Deploy transaction reverted ${tx.hash}`);
 	} else {
 		log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, 'genericDeploy', chain.name);
 
