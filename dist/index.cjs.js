@@ -1,11 +1,10 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -18,443 +17,150 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// node_modules/viem/_esm/errors/version.js
-var version;
-var init_version = __esm({
-  "node_modules/viem/_esm/errors/version.js"() {
-    version = "2.24.2";
-  }
-});
-
-// node_modules/viem/_esm/errors/base.js
-function walk(err, fn) {
-  if (fn?.(err))
-    return err;
-  if (err && typeof err === "object" && "cause" in err && err.cause !== void 0)
-    return walk(err.cause, fn);
-  return fn ? null : err;
-}
-var errorConfig, BaseError;
-var init_base = __esm({
-  "node_modules/viem/_esm/errors/base.js"() {
-    init_version();
-    errorConfig = {
-      getDocsUrl: ({ docsBaseUrl, docsPath = "", docsSlug }) => docsPath ? `${docsBaseUrl ?? "https://viem.sh"}${docsPath}${docsSlug ? `#${docsSlug}` : ""}` : void 0,
-      version: `viem@${version}`
-    };
-    BaseError = class _BaseError extends Error {
-      constructor(shortMessage, args = {}) {
-        const details = (() => {
-          if (args.cause instanceof _BaseError)
-            return args.cause.details;
-          if (args.cause?.message)
-            return args.cause.message;
-          return args.details;
-        })();
-        const docsPath = (() => {
-          if (args.cause instanceof _BaseError)
-            return args.cause.docsPath || args.docsPath;
-          return args.docsPath;
-        })();
-        const docsUrl = errorConfig.getDocsUrl?.({ ...args, docsPath });
-        const message = [
-          shortMessage || "An error occurred.",
-          "",
-          ...args.metaMessages ? [...args.metaMessages, ""] : [],
-          ...docsUrl ? [`Docs: ${docsUrl}`] : [],
-          ...details ? [`Details: ${details}`] : [],
-          ...errorConfig.version ? [`Version: ${errorConfig.version}`] : []
-        ].join("\n");
-        super(message, args.cause ? { cause: args.cause } : void 0);
-        Object.defineProperty(this, "details", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: void 0
-        });
-        Object.defineProperty(this, "docsPath", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: void 0
-        });
-        Object.defineProperty(this, "metaMessages", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: void 0
-        });
-        Object.defineProperty(this, "shortMessage", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: void 0
-        });
-        Object.defineProperty(this, "version", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: void 0
-        });
-        Object.defineProperty(this, "name", {
-          enumerable: true,
-          configurable: true,
-          writable: true,
-          value: "BaseError"
-        });
-        this.details = details;
-        this.docsPath = docsPath;
-        this.metaMessages = args.metaMessages;
-        this.name = args.name ?? this.name;
-        this.shortMessage = shortMessage;
-        this.version = version;
-      }
-      walk(fn) {
-        return walk(this, fn);
-      }
-    };
-  }
-});
-
-// node_modules/viem/_esm/utils/unit/formatUnits.js
-function formatUnits(value, decimals) {
-  let display = value.toString();
-  const negative = display.startsWith("-");
-  if (negative)
-    display = display.slice(1);
-  display = display.padStart(decimals, "0");
-  let [integer, fraction] = [
-    display.slice(0, display.length - decimals),
-    display.slice(display.length - decimals)
-  ];
-  fraction = fraction.replace(/(0+)$/, "");
-  return `${negative ? "-" : ""}${integer || "0"}${fraction ? `.${fraction}` : ""}`;
-}
-var init_formatUnits = __esm({
-  "node_modules/viem/_esm/utils/unit/formatUnits.js"() {
-  }
-});
-
-// node_modules/viem/_esm/constants/abis.js
-var universalResolverErrors, universalResolverResolveAbi, universalResolverReverseAbi, erc20Abi;
-var init_abis = __esm({
-  "node_modules/viem/_esm/constants/abis.js"() {
-    universalResolverErrors = [
-      {
-        inputs: [],
-        name: "ResolverNotFound",
-        type: "error"
-      },
-      {
-        inputs: [],
-        name: "ResolverWildcardNotSupported",
-        type: "error"
-      },
-      {
-        inputs: [],
-        name: "ResolverNotContract",
-        type: "error"
-      },
-      {
-        inputs: [
-          {
-            name: "returnData",
-            type: "bytes"
-          }
-        ],
-        name: "ResolverError",
-        type: "error"
-      },
-      {
-        inputs: [
-          {
-            components: [
-              {
-                name: "status",
-                type: "uint16"
-              },
-              {
-                name: "message",
-                type: "string"
-              }
-            ],
-            name: "errors",
-            type: "tuple[]"
-          }
-        ],
-        name: "HttpError",
-        type: "error"
-      }
-    ];
-    universalResolverResolveAbi = [
-      ...universalResolverErrors,
-      {
-        name: "resolve",
-        type: "function",
-        stateMutability: "view",
-        inputs: [
-          { name: "name", type: "bytes" },
-          { name: "data", type: "bytes" }
-        ],
-        outputs: [
-          { name: "", type: "bytes" },
-          { name: "address", type: "address" }
-        ]
-      },
-      {
-        name: "resolve",
-        type: "function",
-        stateMutability: "view",
-        inputs: [
-          { name: "name", type: "bytes" },
-          { name: "data", type: "bytes" },
-          { name: "gateways", type: "string[]" }
-        ],
-        outputs: [
-          { name: "", type: "bytes" },
-          { name: "address", type: "address" }
-        ]
-      }
-    ];
-    universalResolverReverseAbi = [
-      ...universalResolverErrors,
-      {
-        name: "reverse",
-        type: "function",
-        stateMutability: "view",
-        inputs: [{ type: "bytes", name: "reverseName" }],
-        outputs: [
-          { type: "string", name: "resolvedName" },
-          { type: "address", name: "resolvedAddress" },
-          { type: "address", name: "reverseResolver" },
-          { type: "address", name: "resolver" }
-        ]
-      },
-      {
-        name: "reverse",
-        type: "function",
-        stateMutability: "view",
-        inputs: [
-          { type: "bytes", name: "reverseName" },
-          { type: "string[]", name: "gateways" }
-        ],
-        outputs: [
-          { type: "string", name: "resolvedName" },
-          { type: "address", name: "resolvedAddress" },
-          { type: "address", name: "reverseResolver" },
-          { type: "address", name: "resolver" }
-        ]
-      }
-    ];
-    erc20Abi = [
-      {
-        type: "event",
-        name: "Approval",
-        inputs: [
-          {
-            indexed: true,
-            name: "owner",
-            type: "address"
-          },
-          {
-            indexed: true,
-            name: "spender",
-            type: "address"
-          },
-          {
-            indexed: false,
-            name: "value",
-            type: "uint256"
-          }
-        ]
-      },
-      {
-        type: "event",
-        name: "Transfer",
-        inputs: [
-          {
-            indexed: true,
-            name: "from",
-            type: "address"
-          },
-          {
-            indexed: true,
-            name: "to",
-            type: "address"
-          },
-          {
-            indexed: false,
-            name: "value",
-            type: "uint256"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "allowance",
-        stateMutability: "view",
-        inputs: [
-          {
-            name: "owner",
-            type: "address"
-          },
-          {
-            name: "spender",
-            type: "address"
-          }
-        ],
-        outputs: [
-          {
-            type: "uint256"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "approve",
-        stateMutability: "nonpayable",
-        inputs: [
-          {
-            name: "spender",
-            type: "address"
-          },
-          {
-            name: "amount",
-            type: "uint256"
-          }
-        ],
-        outputs: [
-          {
-            type: "bool"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "balanceOf",
-        stateMutability: "view",
-        inputs: [
-          {
-            name: "account",
-            type: "address"
-          }
-        ],
-        outputs: [
-          {
-            type: "uint256"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "decimals",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [
-          {
-            type: "uint8"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "name",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [
-          {
-            type: "string"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "symbol",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [
-          {
-            type: "string"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "totalSupply",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [
-          {
-            type: "uint256"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "transfer",
-        stateMutability: "nonpayable",
-        inputs: [
-          {
-            name: "recipient",
-            type: "address"
-          },
-          {
-            name: "amount",
-            type: "uint256"
-          }
-        ],
-        outputs: [
-          {
-            type: "bool"
-          }
-        ]
-      },
-      {
-        type: "function",
-        name: "transferFrom",
-        stateMutability: "nonpayable",
-        inputs: [
-          {
-            name: "sender",
-            type: "address"
-          },
-          {
-            name: "recipient",
-            type: "address"
-          },
-          {
-            name: "amount",
-            type: "uint256"
-          }
-        ],
-        outputs: [
-          {
-            type: "bool"
-          }
-        ]
-      }
-    ];
-  }
-});
 
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
   TokenSender: () => TokenSender,
+  baseAccountTypePrefixes: () => baseAccountTypePrefixes,
+  compileContracts: () => compileContracts,
+  conceroNetworks: () => conceroNetworks,
   config: () => config,
+  createEnvAddressGetter: () => createEnvAddressGetter,
+  createEnvUpdater: () => createEnvUpdater,
+  createViemAccountGetter: () => createViemAccountGetter,
+  createViemChain: () => createViemChain,
+  createWalletGetter: () => createWalletGetter,
+  defaultTrezorPath: () => defaultTrezorPath,
+  err: () => err,
+  ethersSignerCallContract: () => ethersSignerCallContract,
+  extractProxyAdminAddress: () => extractProxyAdminAddress,
+  formatGas: () => formatGas,
+  genericDeploy: () => genericDeploy,
+  getActualGasData: () => getActualGasData,
+  getClients: () => getClients,
+  getEnvVar: () => getEnvVar,
+  getFallbackClients: () => getFallbackClients,
+  getGasParameters: () => getGasParameters,
   getNetworkEnvKey: () => getNetworkEnvKey,
   getNetworkKey: () => getNetworkKey,
-  hardhatDeployWrapper: () => hardhatDeployWrapper,
-  networkTypes: () => networkTypes
+  getTestClient: () => getTestClient,
+  getTrezorAddress: () => getTrezorAddress,
+  getTrezorDeployEnabled: () => getTrezorDeployEnabled,
+  getViemAccount: () => getViemAccount,
+  getWallet: () => getWallet,
+  localhostViemChain: () => localhostViemChain,
+  log: () => log,
+  mainnetNetworks: () => mainnetNetworks,
+  networkTypes: () => networkTypes,
+  shorten: () => shorten,
+  testnetNetworks: () => testnetNetworks,
+  trezorDeployContract: () => trezorDeployContract,
+  trezorSendTx: () => trezorSendTx,
+  trezorWriteContract: () => trezorWriteContract,
+  warn: () => warn
 });
 module.exports = __toCommonJS(index_exports);
 
-// src/constants/config.ts
-var config = {
-  DEFAULT_BLOCK_CONFIRMATIONS: 2
+// src/types/networkTypes.ts
+var networkTypes = {
+  mainnet: "mainnet",
+  testnet: "testnet",
+  localhost: "localhost"
 };
+
+// src/utils/createViemChain.ts
+var import_viem = require("viem");
+function createViemChain(chainDefinition) {
+  return (0, import_viem.defineChain)({
+    id: chainDefinition.id,
+    name: chainDefinition.name,
+    nativeCurrency: {
+      decimals: 18,
+      name: "eth",
+      symbol: "eth"
+    },
+    rpcUrls: {
+      default: { http: chainDefinition.rpcUrls }
+    },
+    blockExplorers: chainDefinition.blockExplorer ? {
+      default: {
+        name: chainDefinition.blockExplorer.name,
+        url: chainDefinition.blockExplorer.url
+      }
+    } : void 0,
+    testnet: chainDefinition.isTestnet
+  });
+}
+
+// src/utils/getEnvVar.ts
+var import_process = __toESM(require("process"));
+
+// src/utils/log.ts
+var networkColors = {
+  ethereum: "\x1B[30m",
+  // grey
+  arbitrum: "\x1B[34m",
+  // blue
+  polygon: "\x1B[35m",
+  // magenta
+  avalanche: "\x1B[31m",
+  // red
+  base: "\x1B[36m",
+  // cyan
+  ethereumSepolia: "\x1B[30m",
+  // grey
+  arbitrumSepolia: "\x1B[34m",
+  // blue
+  optimismSepolia: "\x1B[31m",
+  // red
+  polygonAmoy: "\x1B[35m",
+  // magenta
+  avalancheFuji: "\x1B[31m",
+  // red
+  baseSepolia: "\x1B[36m",
+  // cyan
+  hardhat: "\x1B[32m",
+  // green
+  localhost: "\x1B[32m"
+  // green
+};
+var reset = "\x1B[0m";
+function log(message, functionName, networkName) {
+  const greenFill = "\x1B[32m";
+  const network = networkName ? `\x1B[35m[${networkName}]${reset}` : "";
+  console.log(`${network}${greenFill}[${functionName}]${reset}`, message);
+}
+function warn(message, functionName) {
+  const yellowFill = "\x1B[33m";
+  console.log(`${yellowFill}[${functionName}]${reset}`, message);
+}
+function err(message, functionName, networkName) {
+  const redFill = "\x1B[31m";
+  const network = networkName ? `${networkColors[networkName]}[${networkName}]${reset}` : "";
+  console.log(
+    `${network}${redFill}[${functionName}] ERROR:${reset}`,
+    message
+  );
+}
+var log_default = log;
+
+// src/utils/formatting.ts
+function shorten(address) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+function formatGas(gasAmountWei) {
+  return gasAmountWei.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 // src/networks/getNetworkEnvKey.ts
 function getNetworkEnvKey(networkName) {
@@ -482,119 +188,156 @@ function camelCaseToCapsSnakeCase(camelCaseString) {
   return camelCaseString.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toUpperCase();
 }
 
-// src/networks/networkTypes.ts
-var networkTypes = {
-  mainnet: "mainnet",
-  testnet: "testnet",
-  localhost: "localhost"
-};
-
-// node_modules/viem/_esm/errors/unit.js
-init_base();
-var InvalidDecimalNumberError = class extends BaseError {
-  constructor({ value }) {
-    super(`Number \`${value}\` is not a valid decimal number.`, {
-      name: "InvalidDecimalNumberError"
-    });
+// src/utils/getEnvVar.ts
+function getEnvVar(key, defaultValue) {
+  const value = import_process.default.env[key];
+  if (value === void 0 || value === "") {
+    if (defaultValue !== void 0) return defaultValue;
+    warn(`Missing env variable: ${key}`, "getEnvVar");
+    return "";
   }
-};
-
-// node_modules/viem/_esm/utils/unit/parseUnits.js
-function parseUnits(value, decimals) {
-  if (!/^(-?)([0-9]*)\.?([0-9]*)$/.test(value))
-    throw new InvalidDecimalNumberError({ value });
-  let [integer, fraction = "0"] = value.split(".");
-  const negative = integer.startsWith("-");
-  if (negative)
-    integer = integer.slice(1);
-  fraction = fraction.replace(/(0+)$/, "");
-  if (decimals === 0) {
-    if (Math.round(Number(`.${fraction}`)) === 1)
-      integer = `${BigInt(integer) + 1n}`;
-    fraction = "";
-  } else if (fraction.length > decimals) {
-    const [left, unit, right] = [
-      fraction.slice(0, decimals - 1),
-      fraction.slice(decimals - 1, decimals),
-      fraction.slice(decimals)
-    ];
-    const rounded = Math.round(Number(`${unit}.${right}`));
-    if (rounded > 9)
-      fraction = `${BigInt(left) + BigInt(1)}0`.padStart(left.length + 1, "0");
-    else
-      fraction = `${left}${rounded}`;
-    if (fraction.length > decimals) {
-      fraction = fraction.slice(1);
-      integer = `${BigInt(integer) + 1n}`;
-    }
-    fraction = fraction.slice(0, decimals);
-  } else {
-    fraction = fraction.padEnd(decimals, "0");
+  return value;
+}
+function createEnvAddressGetter(config2) {
+  function getEnvAddress(prefix, networkName) {
+    const searchKey = networkName ? `${config2.prefixes[prefix]}_${getNetworkEnvKey(networkName)}` : config2.prefixes[prefix];
+    const value = getEnvVar(searchKey);
+    const friendlyName = `${String(prefix)}(${shorten(value)})`;
+    return [value, friendlyName];
   }
-  return BigInt(`${negative ? "-" : ""}${integer}${fraction}`);
+  return { getEnvAddress };
 }
 
-// node_modules/viem/_esm/index.js
-init_abis();
-init_formatUnits();
+// src/utils/getTrezorDeployEnabled.ts
+var getTrezorDeployEnabled = () => getEnvVar("TREZOR_DEPLOY_ENABLED", "false") === "true";
 
-// src/tokens/TokenSender.ts
-var TokenSender = class {
-  walletClient;
-  publicClient;
-  constructor(walletClient, publicClient) {
-    this.walletClient = walletClient;
-    this.publicClient = publicClient;
-  }
-  async sendToken(tokenAddress, amount, recipient) {
-    const [tokenDecimals, tokenSymbol, tokenBalance] = await Promise.all([
-      this.publicClient.readContract({
-        address: tokenAddress,
-        abi: erc20Abi,
-        functionName: "decimals",
-        args: []
-      }),
-      this.publicClient.readContract({
-        address: tokenAddress,
-        abi: erc20Abi,
-        functionName: "symbol",
-        args: []
-      }),
-      this.publicClient.readContract({
-        address: tokenAddress,
-        abi: erc20Abi,
-        functionName: "balanceOf",
-        args: [this.walletClient.account?.address]
-      })
-    ]);
-    console.log(
-      `Current ${tokenSymbol} balance ${formatUnits(tokenBalance, tokenDecimals)}`
-    );
-    if (parseUnits(amount, tokenDecimals) > tokenBalance) {
-      throw new Error(
-        `Insufficient balance. Required: ${amount}, available: ${formatUnits(tokenBalance, tokenDecimals)}`
-      );
+// src/utils/createWalletGetter.ts
+var baseAccountTypePrefixes = {
+  proxyDeployer: "PROXY_DEPLOYER",
+  deployer: "DEPLOYER"
+};
+function createWalletGetter(config2) {
+  function getWallet2(chainType, accountType, walletType) {
+    const prefix = config2.accountTypePrefixes[accountType];
+    if (!prefix) {
+      throw new Error(`Unknown account type: ${String(accountType)}`);
     }
-    const txHash = await this.walletClient.writeContract({
-      address: tokenAddress,
-      abi: erc20Abi,
-      functionName: "transfer",
-      args: [recipient, parseUnits(amount, tokenDecimals)],
-      chain: this.walletClient.chain,
-      account: this.walletClient.account
-    });
-    const { status } = await this.publicClient.waitForTransactionReceipt({
-      hash: txHash
-    });
-    if (status !== "success") {
-      throw new Error(`Error sending token. Hash: ${txHash}`);
+    const walletKey = walletType === "privateKey" ? "PRIVATE_KEY" : "ADDRESS";
+    const envKey = `${chainType.toUpperCase()}_${prefix}_${walletKey}`;
+    const walletValue = process.env[envKey];
+    if (!walletValue) {
+      warn(`Missing env variable: ${envKey}`, "getWallet");
     }
-    console.log(`Token successfully sent. Hash: ${txHash}`);
-    return txHash;
+    return walletValue;
   }
+  return { getWallet: getWallet2 };
+}
+var { getWallet } = createWalletGetter({
+  accountTypePrefixes: baseAccountTypePrefixes
+});
+
+// src/utils/ethersSignerCallContract.ts
+var ethersSignerCallContract = async (hre, contract, abi, functionName, ...functionArgs) => {
+  const [ethersSigner] = await hre.ethers.getSigners();
+  const ethersContract = new hre.ethers.Contract(contract, abi, ethersSigner);
+  const unsignedTx = await ethersContract[functionName].populateTransaction(...functionArgs);
+  log(
+    `Size: ${(unsignedTx.data.length - 2) / 2}, Input data: ${unsignedTx.data}, Address: ${unsignedTx.to}`,
+    functionName,
+    hre.network.name
+  );
+  return (await ethersSigner.sendTransaction(unsignedTx)).hash;
 };
 
-// src/deploy/getActualGasData.ts
+// src/utils/compileContracts.ts
+var import_child_process = require("child_process");
+function compileContracts({ quiet = true, force = false }) {
+  const packageManager = process.env["PACKAGE_MANAGER"] || "yarn";
+  const command = `${packageManager} compile`;
+  const args = [];
+  if (quiet) args.push("--quiet");
+  if (force) args.push("--force");
+  (0, import_child_process.execSync)(`${command} ${args.join(" ")}`, { stdio: "inherit" });
+}
+
+// src/utils/localhostViemChain.ts
+var import_viem2 = require("viem");
+var localhostViemChain = (0, import_viem2.defineChain)({
+  id: Number(process.env.LOCALHOST_FORK_CHAIN_ID),
+  name: "localhost",
+  nativeCurrency: {
+    decimals: 18,
+    name: "eth",
+    symbol: "eth"
+  },
+  rpcUrls: {
+    default: { http: [process.env.LOCALHOST_RPC_URL ?? "http://127.0.0.1:8545"] }
+  },
+  testnet: true
+});
+var hardhatViemChain = (0, import_viem2.defineChain)({
+  id: Number(process.env.HARDHAT_CHAIN_ID),
+  name: "hardhat",
+  nativeCurrency: {
+    decimals: 18,
+    name: "eth",
+    symbol: "eth"
+  },
+  rpcUrls: {
+    default: { http: [process.env.HARDHAT_RPC_URL ?? "http://127.0.0.1:8545"] }
+  },
+  testnet: true
+});
+
+// src/utils/extractProxyAdminAddress.ts
+var import_ethers = require("ethers");
+function extractProxyAdminAddress(receipt) {
+  const adminChangedTopic = import_ethers.ethers.id("AdminChanged(address,address)");
+  const adminChangedLog = receipt.logs.find((log2) => log2.topics[0] === adminChangedTopic);
+  if (!adminChangedLog) throw new Error("AdminChanged(address,address) log not found");
+  const abiCoder = import_ethers.ethers.AbiCoder.defaultAbiCoder();
+  const [, newAdmin] = abiCoder.decode(["address", "address"], adminChangedLog.data);
+  return newAdmin;
+}
+
+// src/utils/createEnvUpdater.ts
+var import_fs = require("fs");
+var import_path = __toESM(require("path"));
+function createEnvUpdater(config2) {
+  function updateEnvVariable(key, newValue, envFileName) {
+    const filePath = import_path.default.join(config2.basePath, `.env.${envFileName}`);
+    if (!(0, import_fs.existsSync)(filePath)) {
+      throw new Error(`File not found: ${filePath}`);
+    }
+    const envContents = (0, import_fs.readFileSync)(filePath, "utf8");
+    let lines = envContents.split(/\r?\n/);
+    const keyExists = lines.some((line) => line.startsWith(`${key}=`));
+    if (!keyExists) {
+      log_default(
+        `Key ${key} not found in .env file. Adding to ${filePath}`,
+        "updateEnvVariable"
+      );
+      lines.push(`${key}=${newValue}`);
+    } else {
+      lines = lines.map((line) => {
+        const [currentKey] = line.split("=");
+        if (currentKey === key) {
+          return `${key}=${newValue}`;
+        }
+        return line;
+      });
+    }
+    (0, import_fs.writeFileSync)(filePath, lines.join("\n"));
+    process.env[key] = newValue;
+  }
+  function updateEnvAddress(prefix, newValue, envFileName, networkPostfix) {
+    const searchKey = networkPostfix ? `${config2.prefixes[prefix]}_${getNetworkEnvKey(networkPostfix)}` : String(config2.prefixes[prefix]);
+    updateEnvVariable(searchKey, newValue, envFileName);
+  }
+  return { updateEnvVariable, updateEnvAddress };
+}
+
+// src/utils/getActualGasData.ts
 async function getActualGasData(publicClient) {
   const block = await publicClient.getBlock();
   const isEIP1559 = !!block.baseFeePerGas;
@@ -627,72 +370,546 @@ async function getActualGasData(publicClient) {
   return gasData;
 }
 
-// src/deploy/hardhatDeployWrapper.ts
-async function hardhatDeployWrapper(contractName, {
-  hre,
-  args,
-  publicClient,
-  proxy = false,
-  gasLimit,
-  log = false,
-  libraries,
-  skipIfAlreadyDeployed = false
-}) {
-  let actualDeployer;
-  if (proxy) {
-    const { proxyDeployer } = await hre.getNamedAccounts();
-    actualDeployer = proxyDeployer;
-  } else {
-    const { deployer } = await hre.getNamedAccounts();
-    actualDeployer = deployer;
-  }
-  const { deploy } = hre.deployments;
-  const nonce = await publicClient.getTransactionCount({
-    address: actualDeployer
+// src/utils/getViemClients.ts
+var import_viem3 = require("viem");
+var import_accounts = require("viem/accounts");
+
+// src/constants/conceroNetworks.ts
+var import_chains_mainnet = __toESM(require("@concero/concero-networks/output/chains.mainnet.json"));
+var import_chains_testnet = __toESM(require("@concero/concero-networks/output/chains.testnet.json"));
+var mainnetProxyDeployerPK = getWallet("mainnet", "proxyDeployer", "privateKey");
+var testnetProxyDeployerPK = getWallet("testnet", "proxyDeployer", "privateKey");
+var mainnetDeployerPK = getWallet("mainnet", "deployer", "privateKey");
+var testnetDeployerPK = getWallet("testnet", "deployer", "privateKey");
+var testnetAccounts = [testnetDeployerPK, testnetProxyDeployerPK];
+function createExtendedNetworks(chains, networkType, accounts) {
+  const validAccounts = accounts.filter((acc) => !!acc);
+  return Object.fromEntries(
+    Object.values(chains).map((chain) => {
+      const chainDefinition = {
+        id: parseInt(chain.id),
+        name: chain.name,
+        rpcUrls: chain.rpcUrls,
+        isTestnet: chain.isTestnet ?? false,
+        ...chain.blockExplorers?.[0] && {
+          blockExplorer: {
+            name: chain.blockExplorers[0].name,
+            url: chain.blockExplorers[0].url
+          }
+        }
+      };
+      const viemChain = createViemChain(chainDefinition);
+      return [
+        chain.name,
+        {
+          name: chain.name,
+          chainId: parseInt(chain.id),
+          type: networkType,
+          url: chain.rpcUrls[0] || "",
+          rpcUrls: chain.rpcUrls,
+          saveDeployments: false,
+          accounts: validAccounts,
+          chainSelector: BigInt(chain.chainSelector),
+          confirmations: 1,
+          viemChain
+        }
+      ];
+    })
+  );
+}
+var testnetNetworks = createExtendedNetworks(
+  import_chains_testnet.default,
+  networkTypes.testnet,
+  testnetAccounts
+);
+var mainnetNetworks = createExtendedNetworks(
+  import_chains_mainnet.default,
+  networkTypes.mainnet,
+  [mainnetDeployerPK, mainnetProxyDeployerPK]
+);
+var conceroNetworks = {
+  ...testnetNetworks,
+  ...mainnetNetworks
+};
+
+// src/utils/getViemClients.ts
+function getClients(viemChain, url, account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`)) {
+  const publicClient = (0, import_viem3.createPublicClient)({
+    transport: (0, import_viem3.http)(url),
+    chain: viemChain
   });
-  const gasData = await getActualGasData(publicClient);
-  const waitConfirmations = hre.network.name.startsWith("ethereum") ? 1 : 3;
-  if (log) {
-    console.log(
-      `\x1B[34m[hardhatDeployWrapper]\x1B[0m\x1B[35m[args]\x1B[0m`,
+  const walletClient = (0, import_viem3.createWalletClient)({
+    transport: (0, import_viem3.http)(url),
+    chain: viemChain,
+    account
+  });
+  return { walletClient, publicClient, account };
+}
+function getTestClient(account) {
+  const testClient = (0, import_viem3.createTestClient)({
+    chain: localhostViemChain,
+    mode: "hardhat",
+    transport: (0, import_viem3.http)(),
+    account
+  }).extend(import_viem3.publicActions).extend(import_viem3.walletActions);
+  return testClient;
+}
+function getFallbackClients(chain, account) {
+  if (!account) {
+    switch (chain.type) {
+      case "mainnet":
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.MAINNET_DEPLOYER_PRIVATE_KEY}`);
+        break;
+      case "testnet":
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.TESTNET_DEPLOYER_PRIVATE_KEY}`, {
+          nonceManager: import_viem3.nonceManager
+        });
+        break;
+      case "localhost":
+        account = (0, import_accounts.privateKeyToAccount)(`0x${process.env.LOCALHOST_DEPLOYER_PRIVATE_KEY}`);
+        break;
+      default:
+        throw new Error(`Unsupported chain type: ${chain.type}`);
+    }
+  }
+  const { viemChain, name } = chain;
+  if (!conceroNetworks[name].rpcUrls.length) {
+    throw new Error(`No URLs configured for chain: ${name}`);
+  }
+  const transport = (0, import_viem3.fallback)(
+    conceroNetworks[name].rpcUrls.map((url) => (0, import_viem3.http)(url)),
+    {
+      retryCount: 3
+    }
+  );
+  const publicClient = (0, import_viem3.createPublicClient)({ transport, chain: viemChain });
+  const walletClient = (0, import_viem3.createWalletClient)({
+    transport,
+    chain: viemChain,
+    account
+  });
+  return { walletClient, publicClient, account };
+}
+function getViemAccount(chainType, accountType) {
+  const privateKey = `0x${getWallet(chainType, accountType, "privateKey")}`;
+  return (0, import_accounts.privateKeyToAccount)(privateKey, {
+    nonceManager: import_viem3.nonceManager
+  });
+}
+function createViemAccountGetter(config2) {
+  function getViemAccount2(chainType, accountType) {
+    const privateKey = `0x${config2.getWallet(chainType, accountType, "privateKey")}`;
+    return (0, import_accounts.privateKeyToAccount)(privateKey, {
+      nonceManager: import_viem3.nonceManager
+    });
+  }
+  return { getViemAccount: getViemAccount2 };
+}
+
+// src/utils/getGasParameters.ts
+var NETWORK_MINIMUMS = {
+  polygon: {
+    minTipCap: BigInt(3e10),
+    // 30 gwei
+    minBaseFee: BigInt(3e10)
+    // 30 gwei
+  }
+  // Add other networks as needed
+};
+async function getGasParameters(chain, priorityMultiplier = 1, maxFeeMultiplier = 1) {
+  const { publicClient } = getFallbackClients(chain);
+  try {
+    const block = await publicClient.getBlock();
+    const baseFee = block.baseFeePerGas ?? BigInt(0);
+    const networkMinimums = getNetworkMinimums(chain);
+    const suggestedPriorityFee = await getSuggestedPriorityFee(publicClient, chain);
+    const calculatedPriorityFee = calculatePriorityFee(
+      suggestedPriorityFee,
+      priorityMultiplier
+    );
+    const priorityFee = calculatedPriorityFee > networkMinimums.minTipCap ? calculatedPriorityFee : networkMinimums.minTipCap;
+    const calculatedMaxFee = calculateMaxFee(baseFee, priorityFee, maxFeeMultiplier);
+    const minRequiredMaxFee = networkMinimums.minBaseFee + priorityFee;
+    const maxFeePerGas = calculatedMaxFee > minRequiredMaxFee ? calculatedMaxFee : minRequiredMaxFee;
+    return {
+      maxFeePerGas,
+      maxPriorityFeePerGas: priorityFee
+    };
+  } catch (error) {
+    const networkMinimums = getNetworkMinimums(chain);
+    const gasPrice = await publicClient.getGasPrice();
+    const priorityFee = networkMinimums.minTipCap;
+    return {
+      maxFeePerGas: gasPrice > networkMinimums.minBaseFee + priorityFee ? gasPrice : networkMinimums.minBaseFee + priorityFee,
+      maxPriorityFeePerGas: priorityFee
+    };
+  }
+}
+function getNetworkMinimums(chain) {
+  const isPolygon = chain.chainId === 137 || chain.name.toLowerCase().includes("polygon");
+  if (isPolygon) {
+    return NETWORK_MINIMUMS.polygon;
+  }
+  return {
+    minTipCap: BigInt(15e8),
+    // 1.5 gwei
+    minBaseFee: BigInt(1e9)
+    // 1 gwei
+  };
+}
+async function getSuggestedPriorityFee(publicClient, chain) {
+  try {
+    const isPolygon = chain.chainId === 137 || chain.name.toLowerCase().includes("polygon");
+    const blocksToAnalyze = isPolygon ? 5 : 10;
+    const blocks = await Promise.all(
+      Array.from(
+        { length: blocksToAnalyze },
+        (_, i) => publicClient.getBlock({ blockNumber: BigInt(-1 - i) })
+      )
+    );
+    const priorityFees = blocks.map((block) => block.baseFeePerGas ?? BigInt(0)).sort((a, b) => a < b ? -1 : 1);
+    const index = isPolygon ? Math.floor(priorityFees.length * 0.75) : Math.floor(priorityFees.length * 0.5);
+    return priorityFees[index];
+  } catch {
+    return getNetworkMinimums(chain).minTipCap;
+  }
+}
+function calculatePriorityFee(basePriorityFee, multiplier) {
+  return BigInt(Math.ceil(Number(basePriorityFee) * multiplier));
+}
+function calculateMaxFee(baseFee, priorityFee, multiplier) {
+  return BigInt(Math.ceil(Number(baseFee) * multiplier)) + priorityFee;
+}
+
+// src/constants/config.ts
+var config = {
+  DEFAULT_BLOCK_CONFIRMATIONS: 2
+};
+
+// src/trezor/getTrezorAddress.ts
+var import_connect3 = __toESM(require("@trezor/connect"));
+
+// src/trezor/initTrezorOnce.ts
+var import_connect = __toESM(require("@trezor/connect"));
+var isTrezorInitialized = false;
+async function initTrezorOnce() {
+  if (isTrezorInitialized) return;
+  await import_connect.default.init({
+    manifest: {
+      email: "nikita@concero.io",
+      appUrl: "https://concero.io",
+      appName: "concero"
+    }
+  });
+  isTrezorInitialized = true;
+}
+
+// src/trezor/trezorSendTx.ts
+var import_connect2 = __toESM(require("@trezor/connect"));
+var import_viem4 = require("viem");
+var defaultTrezorPath = "m/44'/60'/0'/0/0";
+function normalizeHex(hex, name) {
+  if (!hex.startsWith("0x")) hex = `0x${hex}`;
+  if (!(0, import_viem4.isHex)(hex)) throw new Error(`${name} must be 0x-prefixed hex`);
+  return hex;
+}
+function yParityFromV(v) {
+  if (v === 0n || v === 1n) return Number(v);
+  if (v === 27n || v === 28n) return Number(v - 27n);
+  return Number((v - 35n) % 2n);
+}
+async function trezorSendTx(viemParams, txParams, trezorPrams = {
+  path: defaultTrezorPath,
+  showFromAddressOnTrezor: false,
+  forceLegacy: false
+}) {
+  await initTrezorOnce();
+  const { publicClient } = viemParams;
+  const { to = null, value = 0n, data = "0x" } = txParams;
+  const { path: path2, forceLegacy } = trezorPrams;
+  const chainId = publicClient.chain?.id ?? await publicClient.getChainId();
+  const from = await getTrezorAddress(path2);
+  log(`Deploy from ${from}`, "trezorSendTx");
+  const normData = normalizeHex(data, "data");
+  const nonce = txParams.nonce ?? await publicClient.getTransactionCount({
+    address: from,
+    blockTag: "pending"
+  });
+  const gas = txParams.gas ?? await publicClient.estimateGas({
+    account: from,
+    to: to ?? void 0,
+    value,
+    data: normData === "0x" ? void 0 : normData
+  });
+  let gasPrice = txParams.gasPrice;
+  let maxFeePerGas = txParams.maxFeePerGas;
+  let maxPriorityFeePerGas = txParams.maxPriorityFeePerGas;
+  if (!forceLegacy && gasPrice == null && (maxFeePerGas == null || maxPriorityFeePerGas == null)) {
+    try {
+      const fees = await publicClient.estimateFeesPerGas();
+      if ("maxFeePerGas" in fees && "maxPriorityFeePerGas" in fees) {
+        maxFeePerGas = fees.maxFeePerGas;
+        maxPriorityFeePerGas = fees.maxPriorityFeePerGas;
+      } else if ("gasPrice" in fees) {
+        gasPrice = fees.gasPrice;
+      }
+    } catch (e) {
+      log(`EIP-1559 not supported for ${chainId}, using legacy gas price`, "trezorSendTx");
+    }
+  }
+  const useEip1559 = !forceLegacy && maxFeePerGas != null && maxPriorityFeePerGas != null;
+  if (!useEip1559 && gasPrice == null) {
+    gasPrice = await publicClient.getGasPrice();
+  }
+  const txForTrezor = {
+    to,
+    value: (0, import_viem4.toHex)(value),
+    data: normData,
+    chainId,
+    nonce: (0, import_viem4.toHex)(nonce),
+    gasLimit: (0, import_viem4.toHex)(gas)
+  };
+  if (useEip1559) {
+    txForTrezor.maxFeePerGas = (0, import_viem4.toHex)(maxFeePerGas);
+    txForTrezor.maxPriorityFeePerGas = (0, import_viem4.toHex)(maxPriorityFeePerGas);
+  } else {
+    txForTrezor.gasPrice = (0, import_viem4.toHex)(gasPrice);
+  }
+  const signRes = await import_connect2.default.ethereumSignTransaction({
+    path: path2,
+    transaction: txForTrezor
+  });
+  if (!signRes.success) throw new Error(signRes.payload.error);
+  const r = normalizeHex(signRes.payload.r, "r");
+  const s = normalizeHex(signRes.payload.s, "s");
+  const vBig = BigInt(signRes.payload.v);
+  const txSerializable = {
+    chainId,
+    nonce,
+    gas,
+    to: to ?? void 0,
+    value,
+    data: normData
+  };
+  if (useEip1559) {
+    txSerializable.maxFeePerGas = maxFeePerGas;
+    txSerializable.maxPriorityFeePerGas = maxPriorityFeePerGas;
+    const serializedTransaction = (0, import_viem4.serializeTransaction)(txSerializable, {
+      r,
+      s,
+      yParity: yParityFromV(vBig)
+    });
+    return await publicClient.sendRawTransaction({ serializedTransaction });
+  } else {
+    txSerializable.gasPrice = gasPrice;
+    const serializedTransaction = (0, import_viem4.serializeTransaction)(txSerializable, {
+      r,
+      s,
+      v: vBig
+    });
+    return await publicClient.sendRawTransaction({ serializedTransaction });
+  }
+}
+
+// src/trezor/getTrezorAddress.ts
+var getTrezorAddress = async (path2 = defaultTrezorPath) => {
+  await initTrezorOnce();
+  const addrRes = await import_connect3.default.ethereumGetAddress({
+    path: path2,
+    showOnTrezor: false
+  });
+  if (!addrRes.success) throw new Error(addrRes.payload.error);
+  return addrRes.payload.address;
+};
+
+// src/trezor/trezorDeployContract.ts
+var import_viem5 = require("viem");
+async function trezorDeployContract(viemParams, deployParams, trezorParams) {
+  const { publicClient } = viemParams;
+  const { abi, bytecode, args, value = 0n, ...overrides } = deployParams;
+  const data = (0, import_viem5.encodeDeployData)({ abi, bytecode, args });
+  const hash = await trezorSendTx(
+    { publicClient },
+    { data, value, ...overrides },
+    trezorParams
+  );
+  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  if (!receipt.contractAddress)
+    throw new Error("No contractAddress in receipt");
+  return { hash, contractAddress: receipt.contractAddress };
+}
+
+// src/trezor/trezorWriteContract.ts
+var import_viem6 = require("viem");
+async function trezorWriteContract(viemParams, writeContractParams, trezorParams) {
+  const {
+    address,
+    abi,
+    functionName,
+    args,
+    value = 0n,
+    ...overrides
+  } = writeContractParams;
+  const data = (0, import_viem6.encodeFunctionData)({ abi, functionName, args });
+  return trezorSendTx(
+    viemParams,
+    {
+      to: address,
+      data,
+      value,
+      ...overrides
+    },
+    trezorParams
+  );
+}
+
+// src/deploy/GenericDeploy.ts
+var genericDeploy = async ({ hre, contractName, txParams }, ...contractConstructorArgs) => {
+  const [deployer] = await hre.ethers.getSigners();
+  const chain = conceroNetworks[hre.network.name];
+  const isTrezorDeployEnabled = getTrezorDeployEnabled();
+  log(`isTrezorDeployEnabled: ${isTrezorDeployEnabled}`, "genericDeploy");
+  const contractFactory = await hre.ethers.getContractFactory(contractName, {
+    libraries: txParams?.libraries
+  });
+  const deployOverrides = txParams?.gasLimit ? { gasLimit: txParams.gasLimit } : {};
+  let deploymentAddress;
+  let receipt;
+  if (isTrezorDeployEnabled) {
+    const { publicClient } = getFallbackClients(chain);
+    const tx = await trezorDeployContract(
+      { publicClient },
       {
-        from: actualDeployer,
-        args,
-        nonce,
-        gasLimit: gasLimit ? gasLimit : "auto",
-        gasData,
-        waitConfirmations
+        args: contractConstructorArgs,
+        abi: hre.artifacts.readArtifactSync(contractName).abi,
+        bytecode: contractFactory.bytecode,
+        gas: deployOverrides.gasLimit
       }
     );
+    deploymentAddress = tx.contractAddress;
+    receipt = await publicClient.waitForTransactionReceipt({ hash: tx.hash });
+    if (receipt.status !== "success") throw new Error(`Deploy transaction reverted ${tx.hash}`);
+  } else {
+    log(`Deploy ${contractName} from address: ${await deployer.getAddress()}`, "genericDeploy", chain.name);
+    const contract = await contractFactory.deploy(...contractConstructorArgs, deployOverrides);
+    receipt = await contract.deploymentTransaction()?.wait();
+    deploymentAddress = await contract.getAddress();
   }
-  let deployment;
-  try {
-    console.log("Starting deployment of:", contractName);
-    deployment = await deploy(contractName, {
-      from: actualDeployer,
-      args,
-      log: true,
-      autoMine: true,
-      nonce,
-      waitConfirmations,
-      ...gasLimit ? { gasLimit } : {},
-      ...gasData,
-      ...libraries ? { libraries } : {},
-      skipIfAlreadyDeployed
+  if (hre.tenderly) {
+    try {
+      await hre.tenderly.verify({
+        name: contractName,
+        address: deploymentAddress
+      });
+    } catch (e) {
+      console.error(JSON.stringify(e));
+    }
+  }
+  log(`Deployed at: ${deploymentAddress}`, `deploy ${contractName}`, chain.name);
+  return {
+    address: deploymentAddress,
+    chainName: chain.name,
+    chainType: chain.type,
+    chainId: chain.chainId,
+    receipt
+  };
+};
+
+// src/tokens/TokenSender.ts
+var import_viem7 = require("viem");
+var TokenSender = class {
+  walletClient;
+  publicClient;
+  constructor(walletClient, publicClient) {
+    this.walletClient = walletClient;
+    this.publicClient = publicClient;
+  }
+  async sendToken(tokenAddress, amount, recipient) {
+    const [tokenDecimals, tokenSymbol, tokenBalance] = await Promise.all([
+      this.publicClient.readContract({
+        address: tokenAddress,
+        abi: import_viem7.erc20Abi,
+        functionName: "decimals",
+        args: []
+      }),
+      this.publicClient.readContract({
+        address: tokenAddress,
+        abi: import_viem7.erc20Abi,
+        functionName: "symbol",
+        args: []
+      }),
+      this.publicClient.readContract({
+        address: tokenAddress,
+        abi: import_viem7.erc20Abi,
+        functionName: "balanceOf",
+        args: [this.walletClient.account?.address]
+      })
+    ]);
+    console.log(
+      `Current ${tokenSymbol} balance ${(0, import_viem7.formatUnits)(tokenBalance, tokenDecimals)}`
+    );
+    if ((0, import_viem7.parseUnits)(amount, tokenDecimals) > tokenBalance) {
+      throw new Error(
+        `Insufficient balance. Required: ${amount}, available: ${(0, import_viem7.formatUnits)(tokenBalance, tokenDecimals)}`
+      );
+    }
+    const txHash = await this.walletClient.writeContract({
+      address: tokenAddress,
+      abi: import_viem7.erc20Abi,
+      functionName: "transfer",
+      args: [recipient, (0, import_viem7.parseUnits)(amount, tokenDecimals)],
+      chain: this.walletClient.chain,
+      account: this.walletClient.account
     });
-  } catch (error) {
-    console.error("Error deploying contract:", error);
-    throw error;
+    const { status } = await this.publicClient.waitForTransactionReceipt({
+      hash: txHash
+    });
+    if (status !== "success") {
+      throw new Error(`Error sending token. Hash: ${txHash}`);
+    }
+    console.log(`Token successfully sent. Hash: ${txHash}`);
+    return txHash;
   }
-  return deployment;
-}
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   TokenSender,
+  baseAccountTypePrefixes,
+  compileContracts,
+  conceroNetworks,
   config,
+  createEnvAddressGetter,
+  createEnvUpdater,
+  createViemAccountGetter,
+  createViemChain,
+  createWalletGetter,
+  defaultTrezorPath,
+  err,
+  ethersSignerCallContract,
+  extractProxyAdminAddress,
+  formatGas,
+  genericDeploy,
+  getActualGasData,
+  getClients,
+  getEnvVar,
+  getFallbackClients,
+  getGasParameters,
   getNetworkEnvKey,
   getNetworkKey,
-  hardhatDeployWrapper,
-  networkTypes
+  getTestClient,
+  getTrezorAddress,
+  getTrezorDeployEnabled,
+  getViemAccount,
+  getWallet,
+  localhostViemChain,
+  log,
+  mainnetNetworks,
+  networkTypes,
+  shorten,
+  testnetNetworks,
+  trezorDeployContract,
+  trezorSendTx,
+  trezorWriteContract,
+  warn
 });
 //# sourceMappingURL=index.cjs.js.map

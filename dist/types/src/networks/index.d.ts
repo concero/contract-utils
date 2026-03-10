@@ -1,5 +1,2 @@
-import { getNetworkEnvKey, getNetworkKey } from './getNetworkEnvKey';
-import { networkTypes } from './networkTypes';
-import { type ConceroNetwork, type NetworkType } from './types';
-export { getNetworkEnvKey, getNetworkKey, networkTypes };
-export type { ConceroNetwork, NetworkType };
+export { getNetworkEnvKey, getNetworkKey } from './getNetworkEnvKey';
+export { networkTypes, type ConceroNetwork, type NetworkType } from '../types';
